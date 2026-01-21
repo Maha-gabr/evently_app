@@ -1,3 +1,4 @@
+import 'package:evently_app/home/tabs/profile_tab.dart';
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
@@ -7,7 +8,7 @@ class  HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text(AppLocalizations.of(context)!.language,style: TextStyle(color: Colors.black,fontSize: 33),),
+      body: ProfileTap(),
     );
   }
 }

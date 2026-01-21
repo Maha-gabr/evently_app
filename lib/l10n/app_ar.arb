@@ -1,7 +1,12 @@
 {
   "helloWorld": "مرحبا",
-  "language": "اللغات"
-
-
+  "language": "اللغات",
+  "english": "الانجليزيه",
+  "arabic": "عربي",
+  "theme": "الشكل",
+  "light": "فاتح",
+  "dark": "غامق",
+  "dark_mode": "الوضع الليلي",
+  "logout": "تسجيل الخروج"
 
 }

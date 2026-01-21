@@ -1,6 +1,17 @@
 {
   "helloWorld": "Hello World!",
-  "language": "Language"
+  "language": "Language",
+  "english": "English",
+  "arabic": "Arabic",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "dark_mode": "Dark Mode",
+  "logout": "Logout"
+
+
+
+
 
 
 }
