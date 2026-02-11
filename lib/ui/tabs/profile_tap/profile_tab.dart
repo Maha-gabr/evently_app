@@ -1,13 +1,13 @@
 import 'package:evently_app/extensions/context_extension.dart';
-import 'package:evently_app/home/tabs/theme/theme_bottom_sheet.dart';
-import 'package:evently_app/home/tabs/widgets/setting_item.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/ui/tabs/profile_tap/theme/theme_bottom_sheet.dart';
+import 'package:evently_app/ui/tabs/profile_tap/widgets/setting_item.dart';
 import 'package:evently_app/utiles/app_assets.dart';
 import 'package:evently_app/utiles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/app_theme_provider.dart';
+import '../../../providers/app_theme_provider.dart';
 import 'language/lang_bottom_sheet.dart';
 class ProfileTap extends StatefulWidget {
    ProfileTap({super.key});

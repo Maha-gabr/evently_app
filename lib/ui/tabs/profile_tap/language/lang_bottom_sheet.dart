@@ -4,7 +4,8 @@ import 'package:evently_app/utiles/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../providers/app_lang_provider.dart';
+import '../../../../providers/app_lang_provider.dart';
+
 class LangBottomSheet extends StatelessWidget {
    LangBottomSheet({super.key});
 
