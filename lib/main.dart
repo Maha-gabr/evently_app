@@ -1,10 +1,9 @@
 import 'package:evently_app/providers/app_lang_provider.dart';
 import 'package:evently_app/providers/app_theme_provider.dart';
+import 'package:evently_app/ui/root_screen.dart';
 import 'package:evently_app/utiles/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'home/home_screen.dart';
-import 'home/tabs/profile_tab.dart';
 import 'l10n/app_localizations.dart';
 
 void main() {
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: Locale(appLangProvider.appLang),
-      home: HomeScreen(),
+      home: RootScreen(),
     );
   }
 }
