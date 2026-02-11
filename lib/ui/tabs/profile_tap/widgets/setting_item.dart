@@ -3,7 +3,7 @@ import 'package:evently_app/utiles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../extensions/context_extension.dart';
+import '../../../../extensions/context_extension.dart';
 class SettingItem extends StatelessWidget {
   final String text;
   final Widget item;
