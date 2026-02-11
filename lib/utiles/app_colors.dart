@@ -10,10 +10,11 @@ class AppColors {
   static final Color strokeWhiteColor =Color(0xFFF0F0F0);
   static final Color strokeDarkColor = Color(0xff002D8F);
   static final Color mainColor = Color(0xff0E3A99);
-  static final Color mainDarkColor = Color(0xff456AED);
+  static final Color mainDarkColor = Color(0xff457AED);
   static final Color lightGreyColor =Color(0xFFB9B9B9);
   static final Color redColor =Color(0xffFF3232);
   static final Color switchColor = Color(0xff457AED);
+  static final Color fillDarkColor = Color(0xff001440);
 
 
 
