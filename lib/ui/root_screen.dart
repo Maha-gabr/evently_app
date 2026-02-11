@@ -4,18 +4,36 @@ import 'package:evently_app/ui/tabs/profile_tap/profile_tab.dart';
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
-class  RootScreen extends StatelessWidget {
+class  RootScreen extends StatefulWidget {
   const  RootScreen({super.key});
 
   @override
+  State<RootScreen> createState() => _RootScreenState();
+}
+
+class _RootScreenState extends State<RootScreen> {
+  int selectedIndex= 0;
+  @override
   Widget build(BuildContext context) {
-    List <Widget> widgetsList = [
+    List <Widget> tabsList = [
       HomeTap(),
       FavTap(),
       ProfileTap(),
     ];
     return Scaffold(
+      body: Column(
+        children: [
+          Expanded(child: tabsList[selectedIndex]),
+        ],
+      ),
       bottomNavigationBar: NavigationBar(
+        selectedIndex: selectedIndex,
+          onDestinationSelected: (index){
+          setState(() {
+            selectedIndex = index;
+          });
+
+          },
           destinations:[
             NavigationDestination(
               icon: Icon(Icons.home_outlined),
