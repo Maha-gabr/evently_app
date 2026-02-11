@@ -2,8 +2,9 @@ import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../providers/app_lang_provider.dart';
-import '../../../providers/app_theme_provider.dart';
+import '../../../../providers/app_theme_provider.dart';
+
+
 class ThemeBottomSheet extends StatelessWidget {
 
   @override
