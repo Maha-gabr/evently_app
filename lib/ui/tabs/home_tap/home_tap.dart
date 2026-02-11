@@ -1,6 +1,7 @@
 import 'package:evently_app/extensions/context_extension.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/app_theme_provider.dart';
+import 'package:evently_app/ui/tabs/home_tap/widgets/lang_label.dart';
 import 'package:evently_app/ui/tabs/home_tap/widgets/tap_widgets.dart';
 import 'package:evently_app/utiles/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -47,12 +48,11 @@ class _HomeTapState extends State<HomeTap> {
                           ? Icon(Icons.mode_night_outlined,size: 24,color: AppColors.mainDarkColor,)
                           : Icon(Icons.light_mode_outlined,size: 24,color: AppColors.mainColor,)
                   ),
-
+                  LangLabel(),
                 ],
               ),
               Text("maha",
                 style: Theme.of(context).textTheme.titleLarge,textAlign: .start,),
-              //////////////////
               SizedBox(height: context.height * 0.02,),
               DefaultTabController(
                   length:eventNameList.length,
