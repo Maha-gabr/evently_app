@@ -21,7 +21,6 @@ bool isSelected = false;
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<AppThemeProvider>(context);
-    double height = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Padding(
