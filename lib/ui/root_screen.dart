@@ -1,3 +1,5 @@
+import 'package:evently_app/ui/tabs/fav_tap/fav_tap.dart';
+import 'package:evently_app/ui/tabs/home_tap/home_tap.dart';
 import 'package:evently_app/ui/tabs/profile_tap/profile_tab.dart';
 import 'package:flutter/material.dart';
 
@@ -7,11 +9,11 @@ class  RootScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List <Widget> widgetsList = [
-    //   // HomeTap(),
-    //   // FavoriteTap(),
-    //   ProfileTap(),
-    // ];
+    List <Widget> widgetsList = [
+      HomeTap(),
+      FavTap(),
+      ProfileTap(),
+    ];
     return Scaffold(
       bottomNavigationBar: NavigationBar(
           destinations:[
