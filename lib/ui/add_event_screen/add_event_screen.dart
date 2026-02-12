@@ -18,7 +18,7 @@ import "../tabs/home_tap/widgets/tap_widgets.dart";
   State<AddEventScreen> createState() => _AddEventScreenState();
 }
 class _AddEventScreenState extends State<AddEventScreen> {
-       int selectedIndex =0;
+      // int selectedIndex =0;
       String title ='';
       String description = '';
       DateTime? selectedDate ;
@@ -27,19 +27,22 @@ class _AddEventScreenState extends State<AddEventScreen> {
       String dateFormate ='';
      List<String> eventImagesLightList =[];
      List<String> eventImagesDarkList=[];
-     late EventProvider eventProvider ;
+      late EventProvider eventProvider ;
+      late List<String> eventNamesList;
     var formKey = GlobalKey<FormState>();
 @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       eventProvider.getEventNameList(context);
+
     },);
   }
       @override
       Widget build(BuildContext context) {
+        eventProvider = Provider.of<EventProvider>(context);
+        eventNamesList = eventProvider.eventNameList.sublist(1);
         AppThemeProvider appTheme =Provider.of<AppThemeProvider>(context);
-         eventProvider = Provider.of<EventProvider>(context);
         eventImagesLightList= [
           AppAssets.sport,
           AppAssets.birthday,
@@ -57,7 +60,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
         String selectedImage =appTheme.isDark()
             ? eventImagesDarkList[eventProvider.selectedIndex]
             : eventImagesLightList[eventProvider.selectedIndex];
-        List<String> eventNamesList = eventProvider.eventNameList.sublist(1);
         return Scaffold(
           body: SafeArea(
             child: Padding(
@@ -116,13 +118,15 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                       onTap: (){
-                                        // eventProvider.changeIndex(index);
+                                         eventProvider.changeIndex(index);
+                                         /*
                                          setState(() {
                                            selectedIndex = index;
                                          });
+                                         */
                                       },
                                       child: TapWidget(
-                                        isSelected:selectedIndex == index,
+                                        isSelected:eventProvider.selectedIndex == index,
                                         eventType: eventNamesList[index],
                                       )
                                   );
@@ -192,11 +196,13 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 eventDescription: description,
                                 eventImage: selectedImage,
                                 eventTitle: title,
-                                eventName: eventNamesList[selectedIndex]
+                                eventName: eventNamesList[eventProvider.selectedIndex]
                             );
                               FirebaseUtils.addEventToFireStore(event);
+                              Navigator.pop(context);
                           },
-                          child: Text(AppLocalizations.of(context)!.add_event))
+                          child: Text(AppLocalizations.of(context)!.add_event)
+                      )
                     ],
                   ),
                 ),
