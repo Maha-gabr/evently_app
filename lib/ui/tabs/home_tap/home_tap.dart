@@ -1,17 +1,29 @@
 import 'package:evently_app/extensions/context_extension.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/app_theme_provider.dart';
+import 'package:evently_app/ui/tabs/home_tap/widgets/event_item.dart';
 import 'package:evently_app/ui/tabs/home_tap/widgets/lang_label.dart';
 import 'package:evently_app/ui/tabs/home_tap/widgets/tap_widgets.dart';
+import 'package:evently_app/utiles/app_assets.dart';
 import 'package:evently_app/utiles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../models/event.dart';
+import '../../../utiles/app_routes.dart';
 class HomeTap extends StatefulWidget {
   @override
   State<HomeTap> createState() => _HomeTapState();
 }
 
 class _HomeTapState extends State<HomeTap> {
+  Event event = Event(
+      eventTime: '10 :7',
+      eventDate: DateTime.now(),
+      eventDescription: '',
+      eventImage: AppAssets.birthday,
+      eventTitle: 'Sport',
+      eventName: 'Sport');
 
   List <String> eventNameList =[];
   int selectedIndex =0;
@@ -51,7 +63,7 @@ class _HomeTapState extends State<HomeTap> {
                   LangLabel(),
                 ],
               ),
-              Text("maha",
+              Text("Maha",
                 style: Theme.of(context).textTheme.titleLarge,textAlign: .start,),
               SizedBox(height: context.height * 0.02,),
               DefaultTabController(
@@ -67,7 +79,6 @@ class _HomeTapState extends State<HomeTap> {
                     onTap: (index){
                       selectedIndex = index;
                       setState(() {
-
                       });
                     },
                     tabs:
@@ -87,11 +98,8 @@ class _HomeTapState extends State<HomeTap> {
                       {
                         return GestureDetector(
                           onTap: () {
-
                           },
-                          //event item
-                          child: Container(color: AppColors.mainColor,child: Text('event'),),
-                        );
+                          child: EvenItem(event: event),);
                       },
                       separatorBuilder: (context, index) {
                         return SizedBox(height: context.height * 0.021,);
@@ -102,6 +110,13 @@ class _HomeTapState extends State<HomeTap> {
           ),
         ),
       ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+
+            Navigator.of(context).pushNamed(AppRoutes.addEventRouteName);
+          },
+          child: Icon(Icons.add),
+        )
     );
   }
 
