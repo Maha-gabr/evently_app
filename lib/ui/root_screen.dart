@@ -17,7 +17,7 @@ class _RootScreenState extends State<RootScreen> {
   Widget build(BuildContext context) {
     List <Widget> tabsList = [
       HomeTap(),
-      FavTap(),
+      FavoriteTap(),
       ProfileTap(),
     ];
     return Scaffold(
