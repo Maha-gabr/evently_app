@@ -1,15 +1,13 @@
 import 'package:evently_app/extensions/context_extension.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/app_theme_provider.dart';
+import 'package:evently_app/providers/event_provider.dart';
 import 'package:evently_app/ui/tabs/home_tap/widgets/event_item.dart';
 import 'package:evently_app/ui/tabs/home_tap/widgets/lang_label.dart';
 import 'package:evently_app/ui/tabs/home_tap/widgets/tap_widgets.dart';
-import 'package:evently_app/utiles/app_assets.dart';
 import 'package:evently_app/utiles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../models/event.dart';
 import '../../../utiles/app_routes.dart';
 class HomeTap extends StatefulWidget {
   @override
@@ -17,19 +15,27 @@ class HomeTap extends StatefulWidget {
 }
 
 class _HomeTapState extends State<HomeTap> {
-  Event event = Event(
-      eventTime: '10 :7',
-      eventDate: DateTime.now(),
-      eventDescription: '',
-      eventImage: AppAssets.birthday,
-      eventTitle: 'Sport',
-      eventName: 'Sport');
+  // Event event = Event(
+  //     eventTime: '10 :7',
+  //     eventDate: DateTime.now(),
+  //     eventDescription: '',
+  //     eventImage: AppAssets.birthday,
+  //     eventTitle: 'Sport',
+  //     eventName: 'Sport');
 
+  late EventProvider eventProvider ;
   List <String> eventNameList =[];
   int selectedIndex =0;
-
+@override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      context.read<EventProvider>().getEventsList();
+    },);
+  }
   @override
   Widget build(BuildContext context) {
+  eventProvider = Provider.of<EventProvider>(context);
      eventNameList =[
       AppLocalizations.of(context)!.all,
       AppLocalizations.of(context)!.sports,
@@ -92,19 +98,20 @@ class _HomeTapState extends State<HomeTap> {
               ),
               SizedBox(height: context.height * 0.02,),
               Expanded(
-                  child:
-                      ListView.separated(
+                  child: eventProvider. isLoading ?
+                      Center(child: CircularProgressIndicator(color: Colors.red,))
+                    :  ListView.separated(
                       itemBuilder: (context, index)
                       {
                         return GestureDetector(
                           onTap: () {
                           },
-                          child: EvenItem(event: event),);
+                          child: EvenItem(event: eventProvider.eventsList[index]),);
                       },
                       separatorBuilder: (context, index) {
                         return SizedBox(height: context.height * 0.021,);
                       },
-                      itemCount: 10))
+                      itemCount: eventProvider.eventsList.length))
 
             ],
           ),
