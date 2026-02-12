@@ -1,8 +1,10 @@
+import "package:evently_app/models/event.dart";
 import "package:evently_app/providers/app_theme_provider.dart";
 import "package:evently_app/providers/event_provider.dart";
 import "package:evently_app/ui/add_event_screen/widgets/custom_text_field.dart";
 import "package:evently_app/ui/add_event_screen/widgets/event_date_or_time.dart";
 import "package:evently_app/utiles/app_assets.dart";
+import "package:evently_app/utiles/firebase_utils.dart";
 import"package:flutter/material.dart";
 import "package:intl/intl.dart";
 import "package:provider/provider.dart";
@@ -16,6 +18,7 @@ import "../tabs/home_tap/widgets/tap_widgets.dart";
   State<AddEventScreen> createState() => _AddEventScreenState();
 }
 class _AddEventScreenState extends State<AddEventScreen> {
+       int selectedIndex =0;
       String title ='';
       String description = '';
       DateTime? selectedDate ;
@@ -108,16 +111,19 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           SizedBox(
                               height: context.height * 0.06,
                               child: ListView.separated(
-                                itemCount:eventProvider.eventNameList.length-1,
+                                itemCount:eventNamesList.length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                       onTap: (){
-                                         eventProvider.changeIndex(index);
+                                        // eventProvider.changeIndex(index);
+                                         setState(() {
+                                           selectedIndex = index;
+                                         });
                                       },
                                       child: TapWidget(
-                                        isSelected:  eventProvider.selectedIndex == index,
-                                      eventType: eventNamesList[index],
+                                        isSelected:selectedIndex == index,
+                                        eventType: eventNamesList[index],
                                       )
                                   );
                                 },
@@ -180,7 +186,15 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       SizedBox(height: context.height * 0.001,),
                       ElevatedButton(
                           onPressed: (){
-
+                            Event event = Event(
+                                eventTime: timeFormate,
+                                eventDate: selectedDate!,
+                                eventDescription: description,
+                                eventImage: selectedImage,
+                                eventTitle: title,
+                                eventName: eventNamesList[selectedIndex]
+                            );
+                              FirebaseUtils.addEventToFireStore(event);
                           },
                           child: Text(AppLocalizations.of(context)!.add_event))
                     ],
