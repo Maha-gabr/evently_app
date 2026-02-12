@@ -1,5 +1,6 @@
 import 'package:evently_app/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/event.dart';
 import '../../../../providers/app_theme_provider.dart';
@@ -40,9 +41,9 @@ class EvenItem extends StatelessWidget {
                   color: themeProvider.isDark() ? AppColors.strokeDarkColor : AppColors.strokeWhiteColor
               ),
             ),
-            child: Text('22 / 1', style:  Theme.of(context).textTheme.labelMedium,),),
+            // child: Text("${event.eventDate}", style:  Theme.of(context).textTheme.labelMedium,),),
 
-            // child: Text(DateFormat('d MMM').format(event.eventDate), style:  Theme.of(context).textTheme.labelMedium,),)
+            child: Text(DateFormat('d MMM').format(event.eventDate), style:  Theme.of(context).textTheme.labelMedium,),),
 
           Spacer(),
           Container(
