@@ -12,7 +12,7 @@ import "../../extensions/context_extension.dart";
 import "../../l10n/app_localizations.dart";
 import "../tabs/home_tap/widgets/tap_widgets.dart";
     class AddEventScreen extends StatefulWidget {
-       AddEventScreen({super.key});
+      const AddEventScreen({super.key});
 
   @override
   State<AddEventScreen> createState() => _AddEventScreenState();
@@ -195,6 +195,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 eventName: eventNamesList[eventProvider.selectedIndex]
                             );
                               FirebaseUtils.addEventToFireStore(event);
+                              context.read<EventProvider>().getEventsList();
                             print('📌📌📌📌${event.eventName}');
                             print('✔✔✔✔✔${eventProvider.selectedIndex}');
                               Navigator.pop(context);
