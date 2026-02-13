@@ -35,7 +35,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       eventProvider.getEventNameList(context);
-
     },);
   }
       @override
@@ -119,11 +118,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                   return GestureDetector(
                                       onTap: (){
                                          eventProvider.changeIndex(index);
-                                         /*
-                                         setState(() {
-                                           selectedIndex = index;
-                                         });
-                                         */
+                                         print('📌📌📌📌${eventNamesList[eventProvider.selectedIndex]}');
+
                                       },
                                       child: TapWidget(
                                         isSelected:eventProvider.selectedIndex == index,
@@ -199,6 +195,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 eventName: eventNamesList[eventProvider.selectedIndex]
                             );
                               FirebaseUtils.addEventToFireStore(event);
+                            print('📌📌📌📌${event.eventName}');
+                            print('✔✔✔✔✔${eventProvider.selectedIndex}');
                               Navigator.pop(context);
                           },
                           child: Text(AppLocalizations.of(context)!.add_event)
