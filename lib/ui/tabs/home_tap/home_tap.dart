@@ -16,9 +16,6 @@ class HomeTap extends StatefulWidget {
 
 class _HomeTapState extends State<HomeTap> {
 
-  // late EventProvider eventProvider ;
-  // List <String> eventNameList =[];
-  // List <Event> filterList =[];
 
 @override
   void initState() {
@@ -28,13 +25,11 @@ class _HomeTapState extends State<HomeTap> {
       eventProvider.getEventNameList(context);
       eventProvider.getEventsList();
     },);
-
   }
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
-
-
+  // eventProvider.getEventNameList(context);
     var themeProvider = Provider.of<AppThemeProvider>(context);
     return Scaffold(
       body: SafeArea(
@@ -73,9 +68,8 @@ class _HomeTapState extends State<HomeTap> {
                     tabAlignment: .start,
                     onTap: (index){
                       context.read<EventProvider>().changeIndex(index);
-                      //eventProvider.getEventNameList(context);
+                      eventProvider.getEventNameList(context);
                       context.read<EventProvider>().applyFilter();
-
                     },
                     tabs:
                     List.generate(
@@ -95,7 +89,9 @@ class _HomeTapState extends State<HomeTap> {
                       {
                         return GestureDetector(
                           onTap: () {
+                            print("$index");
                             // eventProvider.changeIndex(index);
+                            context.read<EventProvider>().applyFav(eventProvider.filterList[index]);
                           },
                           child: EvenItem(event:eventProvider.filterList[index]),);
                       },
