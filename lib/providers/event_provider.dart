@@ -11,6 +11,8 @@ class EventProvider extends ChangeNotifier{
   int selectedIndex = 0;
   List <Event> eventsList =[];
   List <Event> filterList =[];
+  List <Event> favList =[];
+
   bool isLoading = false;
   String? errorMessage;
   StreamSubscription<QuerySnapshot<Event>>? listener ;
@@ -42,7 +44,6 @@ void getEventsList(){
     filterList = [...eventsList];
     isLoading= false;
     notifyListeners();
-    // applyFilter();
 });
   }
 
@@ -54,6 +55,17 @@ void getEventsList(){
     }
     notifyListeners();
   }
+
+  void applyFav(Event event){
+    // applyFilter();
+    // var selectedEvent = filterList[index];
+    // selectedEvent.isFav =! selectedEvent.isFav;
+    event.isFav = !event.isFav;
+    // FirebaseUtils.updateEvent(event);
+    favList= filterList.where((event) => event.isFav == true).toList();
+    notifyListeners();
+  }
+
   stopListening(){
     listener?.cancel();
   }
