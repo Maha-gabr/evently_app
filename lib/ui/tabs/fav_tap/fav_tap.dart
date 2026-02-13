@@ -1,5 +1,4 @@
 import 'package:evently_app/extensions/context_extension.dart';
-import 'package:evently_app/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../l10n/app_localizations.dart';
@@ -18,18 +17,19 @@ class _FavoriteTapState extends State<FavoriteTap> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      // eventProvider.ap;se
     },);
   }
   @override
   Widget build(BuildContext context) {
     eventProvider = Provider.of<EventProvider>(context);
-  Event event = Event(
-      eventTime: '10:3',
-      eventDate: DateTime.now(),
-      eventDescription: 'Sport',
-      eventImage: 'eventImage',
-      eventTitle: 'sport',
-      eventName: 'sport');
+  // Event event = Event(
+  //     eventTime: '10:3',
+  //     eventDate: DateTime.now(),
+  //     eventDescription: 'Sport',
+  //     eventImage: 'eventImage',
+  //     eventTitle: 'sport',
+  //     eventName: 'sport');
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -45,12 +45,24 @@ class _FavoriteTapState extends State<FavoriteTap> {
               ),
               SizedBox(height: context.height * 0.02,),
               Expanded(child:
-              ListView.separated(
-                  itemBuilder: (context, index) =>  EvenItem(event: event),
+                Center(child:
+                eventProvider.favList.isEmpty
+                ?Text('No Favourite Events Yet',style: Theme.of(context).textTheme.bodyLarge,)
+              :ListView.separated(
+                  itemBuilder: (context, index) =>  GestureDetector(
+                      onTap:(){
+                        eventProvider.applyFav(eventProvider.favList[index]);
+                        // print("🚩🚩🚩${index}");
+                        // print("🚩🚩🚩${eventProvider.favList[index].eventName}");
+
+                        },
+                      child: EvenItem(event: eventProvider.favList[index])),
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 10,);
                   },
-                  itemCount:8))
+                  itemCount:eventProvider.favList.length  )
+                )
+    )
             ],
           ),
         ),
