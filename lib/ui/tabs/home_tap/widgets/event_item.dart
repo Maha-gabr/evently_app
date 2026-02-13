@@ -65,6 +65,9 @@ class EvenItem extends StatelessWidget {
                 Spacer(),
                 IconButton(
                   onPressed: (){
+                    // event.isFav= !event.isFav;
+
+                    // context.read<EventProvider>().applyFav();
                   },
                   icon:Icon(event.isFav ?Icons.favorite : Icons.favorite_border, size: 25,),
                   color: Theme.of(context).colorScheme.primary, )
