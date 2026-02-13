@@ -29,6 +29,7 @@ class EventProvider extends ChangeNotifier{
       AppLocalizations.of(context)!.book_club,
       AppLocalizations.of(context)!.meeting
     ];
+
   }
 
 void getEventsList(){
@@ -40,12 +41,19 @@ void getEventsList(){
     eventsList = event.docs.map((doc) => doc.data()).toList();
     filterList = [...eventsList];
     isLoading= false;
-
     notifyListeners();
+    // applyFilter();
 });
-
   }
 
+  void applyFilter (){
+    if(selectedIndex==0){
+      filterList = eventsList.where((event) => event.eventName.contains(""),).toList();
+    }else{
+      filterList = eventsList.where((event) => event.eventName.contains(eventNameList[selectedIndex]),).toList();
+    }
+    notifyListeners();
+  }
   stopListening(){
     listener?.cancel();
   }
