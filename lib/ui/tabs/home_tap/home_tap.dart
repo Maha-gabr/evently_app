@@ -15,37 +15,26 @@ class HomeTap extends StatefulWidget {
 }
 
 class _HomeTapState extends State<HomeTap> {
-  // Event event = Event(
-  //     eventTime: '10 :7',
-  //     eventDate: DateTime.now(),
-  //     eventDescription: '',
-  //     eventImage: AppAssets.birthday,
-  //     eventTitle: 'Sport',
-  //     eventName: 'Sport');
 
-  late EventProvider eventProvider ;
-  List <String> eventNameList =[];
-  int selectedIndex =0;
+  // late EventProvider eventProvider ;
+  // List <String> eventNameList =[];
+  // List <Event> filterList =[];
+
 @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      context.read<EventProvider>().getEventsList();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final eventProvider = context.read<EventProvider>();
+      eventProvider.getEventNameList(context);
+      eventProvider.getEventsList();
     },);
+
   }
   @override
   Widget build(BuildContext context) {
-  eventProvider = Provider.of<EventProvider>(context);
-     eventNameList =[
-      AppLocalizations.of(context)!.all,
-      AppLocalizations.of(context)!.sports,
-      AppLocalizations.of(context)!.birthday,
-      AppLocalizations.of(context)!.exhibition,
-      AppLocalizations.of(context)!.gaming,
-      AppLocalizations.of(context)!.work_shop,
-      AppLocalizations.of(context)!.eating,
-      AppLocalizations.of(context)!.meeting
-    ];
+    final eventProvider = Provider.of<EventProvider>(context);
+
+
     var themeProvider = Provider.of<AppThemeProvider>(context);
     return Scaffold(
       body: SafeArea(
@@ -73,7 +62,7 @@ class _HomeTapState extends State<HomeTap> {
                 style: Theme.of(context).textTheme.titleLarge,textAlign: .start,),
               SizedBox(height: context.height * 0.02,),
               DefaultTabController(
-                  length:eventNameList.length,
+                  length:eventProvider.eventNameList.length,
                   child: TabBar(
                     isScrollable: true,
                     padding: EdgeInsets.zero,
@@ -83,35 +72,37 @@ class _HomeTapState extends State<HomeTap> {
                     dividerColor: Colors.transparent,
                     tabAlignment: .start,
                     onTap: (index){
-                      selectedIndex = index;
-                      setState(() {
-                      });
+                      context.read<EventProvider>().changeIndex(index);
+                      //eventProvider.getEventNameList(context);
+                      context.read<EventProvider>().applyFilter();
+
                     },
                     tabs:
                     List.generate(
-                       eventNameList.length, (index){
+                        eventProvider.eventNameList.length, (index){
                       return TapWidget(
-                        isSelected: selectedIndex == index,
-                        eventType: eventNameList[index],);
+                        isSelected: eventProvider.selectedIndex == index,
+                        eventType: eventProvider.eventNameList[index],);
                     }),
                   )
               ),
               SizedBox(height: context.height * 0.02,),
               Expanded(
-                  child: eventProvider. isLoading ?
+                  child: context.watch<EventProvider>().isLoading ?
                       Center(child: CircularProgressIndicator(color: Colors.red,))
                     :  ListView.separated(
                       itemBuilder: (context, index)
                       {
                         return GestureDetector(
                           onTap: () {
+                            // eventProvider.changeIndex(index);
                           },
-                          child: EvenItem(event: eventProvider.eventsList[index]),);
+                          child: EvenItem(event:eventProvider.filterList[index]),);
                       },
                       separatorBuilder: (context, index) {
                         return SizedBox(height: context.height * 0.021,);
                       },
-                      itemCount: eventProvider.eventsList.length))
+                      itemCount: eventProvider.filterList.length))
 
             ],
           ),
