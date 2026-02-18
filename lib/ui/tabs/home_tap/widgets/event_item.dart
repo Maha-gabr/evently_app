@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/event.dart';
 import '../../../../providers/app_theme_provider.dart';
-
 import '../../../../utiles/app_colors.dart';
 class EvenItem extends StatelessWidget {
   final Event event ;
@@ -65,9 +64,6 @@ class EvenItem extends StatelessWidget {
                 Spacer(),
                 IconButton(
                   onPressed: (){
-                    // event.isFav= !event.isFav;
-
-                    // context.read<EventProvider>().applyFav();
                   },
                   icon:Icon(event.isFav ?Icons.favorite : Icons.favorite_border, size: 25,),
                   color: Theme.of(context).colorScheme.primary, )
