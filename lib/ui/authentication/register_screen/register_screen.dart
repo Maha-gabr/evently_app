@@ -2,6 +2,7 @@ import 'package:evently_app/extensions/context_extension.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/utiles/app_assets.dart';
 import 'package:evently_app/utiles/app_routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -74,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                     decoration:InputDecoration(
                       hintText: AppLocalizations.of(context)!.enter_your_email,
-                      prefixIcon: Icon(Icons.lock),
+                      prefixIcon: Icon(Icons.email),
                     ),
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -138,9 +139,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(height: context.height * 0.02,),
                 SizedBox(height: context.height * 0.03,),
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if(formKey.currentState!.validate()){
-                        print('🚩🚩🚩added');
+                        try {
+                          final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: emailController.text,
+                            password: passController.text,
+                          );
+                          print('🚩🚩🚩added');
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'weak-password') {
+                            print('The password provided is too weak.');
+                          } else if (e.code == 'email-already-in-use') {
+                            print('The account already exists for that email.');
+                          }
+                        } catch (e) {
+                          print(e);
+                        }
+
                       }
                     },
                     child: Text(AppLocalizations.of(context)!.signup)
