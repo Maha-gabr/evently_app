@@ -1,5 +1,4 @@
 import 'package:evently_app/l10n/app_localizations.dart';
-import 'package:evently_app/utiles/app_colors.dart';
 import 'package:evently_app/utiles/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,9 +43,11 @@ class AppLang extends StatelessWidget{
       child: Row(
         mainAxisAlignment: .spaceBetween,
         children: [
-          Text(text,style: isSelect? AppStyles.semi20Primary:AppStyles.semi20Black,),
-
-          TextButton(onPressed: (){}, child: isSelect ? Icon(Icons.check,size: 25,color: AppColors.mainColor ,): SizedBox.shrink() ),
+          Text(text,style: isSelect? Theme.of(context).textTheme.labelLarge:AppStyles.semi20Black,),
+          IconButton(
+              onPressed: (){},
+              icon: isSelect ? Icon(Icons.check,size: 25,color: Theme.of(context).colorScheme.onSecondary ,): SizedBox.shrink()
+          )
         ],
       ),
     ) ;
