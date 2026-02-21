@@ -34,11 +34,11 @@ class EventProvider extends ChangeNotifier{
 
   }
 
-void getEventsList(){
+void getEventsList(String uid){
     isLoading = true;
     errorMessage = null;
     notifyListeners();
-  Stream<QuerySnapshot<Event>> streamSnapShot=FirebaseUtils.eventCollectionRef().orderBy("eventDate").snapshots();
+  Stream<QuerySnapshot<Event>> streamSnapShot=FirebaseUtils.eventCollectionRef(uid).orderBy("eventDate").snapshots();
  listener= streamSnapShot.listen((event) {
     eventsList = event.docs.map((doc) => doc.data()).toList();
     filterList = [...eventsList];
@@ -57,11 +57,7 @@ void getEventsList(){
   }
 
   void applyFav(Event event){
-    // applyFilter();
-    // var selectedEvent = filterList[index];
-    // selectedEvent.isFav =! selectedEvent.isFav;
     event.isFav = !event.isFav;
-    // FirebaseUtils.updateEvent(event);
     favList= filterList.where((event) => event.isFav == true).toList();
     notifyListeners();
   }
