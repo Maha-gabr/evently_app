@@ -1,9 +1,15 @@
 import 'package:evently_app/extensions/context_extension.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/models/user.dart';
 import 'package:evently_app/utiles/app_assets.dart';
 import 'package:evently_app/utiles/app_routes.dart';
+import 'package:evently_app/utiles/app_toast.dart';
+import 'package:evently_app/utiles/firebase_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/userProvider.dart';
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -146,6 +152,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             email: emailController.text,
                             password: passController.text,
                           );
+                          // add user to fire auth
+                          MyUser myUser = MyUser(
+                              name: nameController.text,
+                              email: emailController.text,
+                              id: credential.user!.uid);
+                         // add user to fire store
+                         await FirebaseUtils.addUsersToFireStore(myUser);
+                          // add user to provider
+                        final Userprovider userProvider= Provider.of<Userprovider>(context,listen: false);
+                        userProvider.updateUser(myUser);
+                          AppToast.appToast(text: "Registered Successfully");
+                          Navigator.of(context).pushNamed(AppRoutes.routeScreenRouteName);
                           print('🚩🚩🚩added');
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
