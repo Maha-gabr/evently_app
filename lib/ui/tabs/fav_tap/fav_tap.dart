@@ -23,13 +23,7 @@ class _FavoriteTapState extends State<FavoriteTap> {
   @override
   Widget build(BuildContext context) {
     eventProvider = Provider.of<EventProvider>(context);
-  // Event event = Event(
-  //     eventTime: '10:3',
-  //     eventDate: DateTime.now(),
-  //     eventDescription: 'Sport',
-  //     eventImage: 'eventImage',
-  //     eventTitle: 'sport',
-  //     eventName: 'sport');
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -47,7 +41,7 @@ class _FavoriteTapState extends State<FavoriteTap> {
               Expanded(child:
                 Center(child:
                 eventProvider.favList.isEmpty
-                ?Text('No Favourite Events Yet',style: Theme.of(context).textTheme.bodyLarge,)
+                ?Text(AppLocalizations.of(context)!.no_fav_event_yet,style: Theme.of(context).textTheme.headlineMedium,)
               :ListView.separated(
                   itemBuilder: (context, index) =>  GestureDetector(
                       onTap:(){
