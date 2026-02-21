@@ -7,6 +7,7 @@
   "light": "Light",
   "dark": "Dark",
   "dark_mode": "Dark Mode",
+  "light_mode": "Light_mode ",
   "logout": "Logout",
   "login": "Login",
   "home": "Home",
@@ -45,7 +46,10 @@
   "event_date": "Event Date",
   "event_time": "Event Time",
   "choose_date": "Choose Date",
-  "choose_time": "Choose Time"
+  "choose_time": "Choose Time",
+  "no_event_yet": "No Events Yet",
+  "no_fav_event_yet": "No Favourite Events Yet"
+
 
 
 
