@@ -1,6 +1,8 @@
 import "package:evently_app/models/event.dart";
+import "package:evently_app/models/user.dart";
 import "package:evently_app/providers/app_theme_provider.dart";
 import "package:evently_app/providers/event_provider.dart";
+import "package:evently_app/providers/userProvider.dart";
 import "package:evently_app/ui/add_event_screen/widgets/custom_text_field.dart";
 import "package:evently_app/ui/add_event_screen/widgets/event_date_or_time.dart";
 import "package:evently_app/utiles/app_assets.dart";
@@ -10,6 +12,7 @@ import "package:intl/intl.dart";
 import "package:provider/provider.dart";
 import "../../extensions/context_extension.dart";
 import "../../l10n/app_localizations.dart";
+import "../../utiles/app_routes.dart";
 import "../tabs/home_tap/widgets/tap_widgets.dart";
     class AddEventScreen extends StatefulWidget {
       const AddEventScreen({super.key});
@@ -39,6 +42,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   }
       @override
       Widget build(BuildContext context) {
+        // final Userprovider user =Provider.of<Userprovider>(context);
         eventProvider = Provider.of<EventProvider>(context);
         eventNamesList = eventProvider.eventNameList.sublist(1);
         AppThemeProvider appTheme =Provider.of<AppThemeProvider>(context);
@@ -56,7 +60,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
           AppAssets.darkBookClub,
           AppAssets.darkMeeting,
         ];
-        String selectedImage =appTheme.isDark()
+        String selectedImage =
+            appTheme.isDark()
             ? eventImagesDarkList[eventProvider.selectedIndex]
             : eventImagesLightList[eventProvider.selectedIndex];
         return Scaffold(
@@ -107,7 +112,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               clipBehavior: Clip.antiAlias,
                               child: Image.asset(
                                   selectedImage
-                              )
+                              ),
                           ),
                           SizedBox(
                               height: context.height * 0.06,
@@ -172,7 +177,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         eventDateOrTime: AppLocalizations.of(context)!.event_date,
                         chooseDateOrTime:selectedDate == null? AppLocalizations.of(context)!.choose_date : dateFormate,
                         onChooseDateOrTime: onChooseDate,),
-                      // SizedBox(height: context.height * 0.001,),
                       EventDateOrTime(
                         iconDateOrTime: Icon(Icons.access_time_rounded,color:Theme.of(context).colorScheme.tertiary,),
                         eventDateOrTime:
@@ -186,6 +190,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       SizedBox(height: context.height * 0.001,),
                       ElevatedButton(
                           onPressed: (){
+                            final MyUser? myUser =Provider.of<Userprovider>(context,listen: false).myUser;
                             Event event = Event(
                                 eventTime: timeFormate,
                                 eventDate: selectedDate!,
@@ -194,10 +199,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 eventTitle: title,
                                 eventName: eventNamesList[eventProvider.selectedIndex]
                             );
-                              FirebaseUtils.addEventToFireStore(event);
-                              context.read<EventProvider>().getEventsList();
+                              FirebaseUtils.addEventToFireStore(event,myUser?.id??'');
+                              context.read<EventProvider>().getEventsList(myUser?.id??'');
+
+
                             print('📌📌📌📌${event.eventName}');
                             print('✔✔✔✔✔${eventProvider.selectedIndex}');
+                            // Navigator.of(context).pushNamed(AppRoutes.homeRouteName);
+                            Navigator.of(context).pushReplacementNamed(AppRoutes.homeRouteName);
                               Navigator.pop(context);
                           },
                           child: Text(AppLocalizations.of(context)!.add_event)
