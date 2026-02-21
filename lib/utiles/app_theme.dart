@@ -116,7 +116,8 @@ class AppTheme{
           secondary: AppColors.whiteColor,
           onPrimary: AppColors.whiteBgColor,
           surface: AppColors.strokeWhiteColor,
-          tertiary: AppColors.mainColor
+          tertiary: AppColors.mainColor,
+        onSecondary: AppColors.mainColor
       )
   );
 
@@ -239,7 +240,9 @@ class AppTheme{
           secondary: AppColors.whiteColor,
           onPrimary: AppColors.primaryDarkColor,
           surface: AppColors.strokeDarkColor,
-          tertiary: AppColors.whiteBgColor
+          tertiary: AppColors.whiteBgColor,
+          onSecondary: AppColors.whiteColor
+
 
 
 
