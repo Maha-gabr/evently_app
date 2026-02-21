@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class AppColors {
   static final Color whiteBgColor = Color(0xffF4F7FF);
   static final Color primaryDarkColor =Color(0xff000F30);
@@ -13,6 +15,7 @@ class AppColors {
   static final Color mainDarkColor = Color(0xff457AED);
   static final Color lightGreyColor =Color(0xFFB9B9B9);
   static final Color redColor =Color(0xffFF3232);
+  static final Color greenColor =Colors.green;
   static final Color switchColor = Color(0xff457AED);
   static final Color fillDarkColor = Color(0xff001440);
 
