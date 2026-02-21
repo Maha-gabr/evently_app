@@ -8,6 +8,7 @@ import 'package:evently_app/ui/tabs/home_tap/widgets/tap_widgets.dart';
 import 'package:evently_app/utiles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../providers/userProvider.dart';
 import '../../../utiles/app_routes.dart';
 class HomeTap extends StatefulWidget {
   @override
@@ -16,19 +17,21 @@ class HomeTap extends StatefulWidget {
 
 class _HomeTapState extends State<HomeTap> {
 
-
+  late EventProvider eventProvider ;
+  late Userprovider userprovider;
 @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final eventProvider = context.read<EventProvider>();
+      // final eventProvider = context.read<EventProvider>();
       eventProvider.getEventNameList(context);
-      eventProvider.getEventsList();
+      eventProvider.getEventsList(userprovider.myUser?.id??'');
     },);
   }
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
+     eventProvider = Provider.of<EventProvider>(context);
+     userprovider = Provider.of<Userprovider>(context);
   // eventProvider.getEventNameList(context);
     var themeProvider = Provider.of<AppThemeProvider>(context);
     return Scaffold(
@@ -53,7 +56,7 @@ class _HomeTapState extends State<HomeTap> {
                   LangLabel(),
                 ],
               ),
-              Text("Maha",
+              Text(Provider.of<Userprovider>(context).myUser?.name??'',
                 style: Theme.of(context).textTheme.titleLarge,textAlign: .start,),
               SizedBox(height: context.height * 0.02,),
               DefaultTabController(
@@ -84,13 +87,14 @@ class _HomeTapState extends State<HomeTap> {
               Expanded(
                   child: context.watch<EventProvider>().isLoading ?
                       Center(child: CircularProgressIndicator(color: Colors.red,))
-                    :  ListView.separated(
+                    : eventProvider.filterList.isEmpty?
+                   Center(child: Text(AppLocalizations.of(context)!.no_event_yet, style:Theme.of(context).textTheme.headlineMedium ,))
+                  :ListView.separated(
                       itemBuilder: (context, index)
                       {
                         return GestureDetector(
                           onTap: () {
-                            print("$index");
-                            // eventProvider.changeIndex(index);
+                            // print("$index");
                             context.read<EventProvider>().applyFav(eventProvider.filterList[index]);
                           },
                           child: EvenItem(event:eventProvider.filterList[index]),);
