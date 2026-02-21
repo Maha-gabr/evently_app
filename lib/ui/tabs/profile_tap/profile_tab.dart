@@ -1,9 +1,10 @@
 import 'package:evently_app/extensions/context_extension.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
-import 'package:evently_app/ui/tabs/profile_tap/theme/theme_bottom_sheet.dart';
+import 'package:evently_app/providers/userProvider.dart';
 import 'package:evently_app/ui/tabs/profile_tap/widgets/setting_item.dart';
 import 'package:evently_app/utiles/app_assets.dart';
 import 'package:evently_app/utiles/app_colors.dart';
+import 'package:evently_app/utiles/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,9 @@ class _ProfileTapState extends State<ProfileTap> {
 bool isSelected = false;
   @override
   Widget build(BuildContext context) {
-    var themeProvider = Provider.of<AppThemeProvider>(context);
+    var themeProvider = context.watch<AppThemeProvider>();
+    var userProvider = context.watch<Userprovider>();
+
 
     return SafeArea(
       child: Padding(
@@ -29,23 +32,19 @@ bool isSelected = false;
           spacing: context.height * 0.02,
             children: [
             Image.asset(AppAssets.routeLogo),
-              Text('Route Acdemy',style: Theme.of(context).textTheme.headlineLarge,),
-              Text('roureacademy@gmail.com',style: Theme.of(context).textTheme.headlineMedium,),
+              Text(userProvider.myUser?.name??'',style: Theme.of(context).textTheme.headlineLarge,),
+              Text(userProvider.myUser?.email??'',style: Theme.of(context).textTheme.headlineMedium,),
 
-              SettingItem(text: AppLocalizations.of(context)!.dark_mode,
+              SettingItem(text: themeProvider.isDark()?AppLocalizations.of(context)!.dark_mode:AppLocalizations.of(context)!.light_mode,
               item: Switch(
                 onChanged: (value) {
-                    isSelected = value;
                     if(value){
                       themeProvider.changeTheme(ThemeMode.dark);
                     }else{
                       themeProvider.changeTheme(ThemeMode.light);
                     }
-                      setState(() {
-
-                      });
                 },
-                value:isSelected ,
+                value:themeProvider.appTheme== ThemeMode.dark ,
               ),
               ),
               SettingItem(text: AppLocalizations.of(context)!.language,
@@ -60,8 +59,11 @@ bool isSelected = false;
               SettingItem(text: AppLocalizations.of(context)!.logout,
                 item:IconButton(
                   onPressed: (){
-
-                  },
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.registerScreenRouteName,
+                          (route) => false,
+                    );                  },
                  icon: Icon(Icons.logout,size: 30,) ,
                   color: AppColors.redColor,
                 ),
@@ -78,22 +80,24 @@ bool isSelected = false;
   }
 
   void showLangBottomSheet(){
-    showModalBottomSheet(context: context,
-        constraints: BoxConstraints(maxHeight: context.height * 0.33),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(16)),
+    showModalBottomSheet(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      context: context,
+        constraints: BoxConstraints(maxHeight: context.height * 0.25),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
         builder: (context) {
       return LangBottomSheet();
         },
     );
   }
 
-  void showThemeBottomSheet(){
-    showModalBottomSheet(context: context,
-      builder: (context) {
-        return ThemeBottomSheet();
-      },
-    );
-  }
+  // void showThemeBottomSheet(){
+  //   showModalBottomSheet(context: context,
+  //     builder: (context) {
+  //       return ThemeBottomSheet();
+  //     },
+  //   );
+  // }
 }
 
 
