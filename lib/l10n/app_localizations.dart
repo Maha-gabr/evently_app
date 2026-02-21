@@ -146,6 +146,12 @@ abstract class AppLocalizations {
   /// **'Dark Mode'**
   String get dark_mode;
 
+  /// No description provided for @light_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light_mode '**
+  String get light_mode;
+
   /// No description provided for @logout.
   ///
   /// In en, this message translates to:
@@ -379,6 +385,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose Time'**
   String get choose_time;
+
+  /// No description provided for @no_event_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Events Yet'**
+  String get no_event_yet;
+
+  /// No description provided for @no_fav_event_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Favourite Events Yet'**
+  String get no_fav_event_yet;
 }
 
 class _AppLocalizationsDelegate
