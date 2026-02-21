@@ -1,7 +1,10 @@
 import 'package:evently_app/providers/app_lang_provider.dart';
 import 'package:evently_app/providers/app_theme_provider.dart';
 import 'package:evently_app/providers/event_provider.dart';
+import 'package:evently_app/providers/userProvider.dart';
 import 'package:evently_app/ui/add_event_screen/add_event_screen.dart';
+import 'package:evently_app/ui/authentication/login_screen/login_screen.dart';
+import 'package:evently_app/ui/authentication/register_screen/register_screen.dart';
 import 'package:evently_app/ui/root_screen.dart';
 import 'package:evently_app/ui/tabs/home_tap/home_tap.dart';
 import 'package:evently_app/utiles/app_routes.dart';
@@ -21,7 +24,8 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => AppLangProvider(),),
         ChangeNotifierProvider(create: (context) => AppThemeProvider(),),
-        ChangeNotifierProvider(create: (context) => EventProvider(),)
+        ChangeNotifierProvider(create: (context) => EventProvider(),),
+        ChangeNotifierProvider(create: (context) => Userprovider(),)
 
       ],
       child: const MyApp()));
@@ -44,15 +48,16 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: Locale(appLangProvider.appLang),
-      initialRoute:AppRoutes.routeScreenRouteName,
       routes: {
         AppRoutes.homeRouteName : (context)=> HomeTap(),
         AppRoutes.addEventRouteName : (context)=> AddEventScreen(),
         AppRoutes.routeScreenRouteName : (context)=> RootScreen(),
-
+        AppRoutes.registerScreenRouteName : (context)=> RegisterScreen(),
+        AppRoutes.loginScreenRouteName : (context)=> LoginScreen(),
 
       },
-      // home: RootScreen(),
+      initialRoute:AppRoutes.registerScreenRouteName,
+      // home: RegisterScreen(),
     );
   }
 }
