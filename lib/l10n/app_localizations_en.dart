@@ -33,6 +33,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dark_mode => 'Dark Mode';
 
   @override
+  String get light_mode => 'Light_mode ';
+
+  @override
   String get logout => 'Logout';
 
   @override
@@ -148,4 +151,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get choose_time => 'Choose Time';
+
+  @override
+  String get no_event_yet => 'No Events Yet';
+
+  @override
+  String get no_fav_event_yet => 'No Favourite Events Yet';
 }

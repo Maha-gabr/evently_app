@@ -33,6 +33,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dark_mode => 'الوضع الليلي';
 
   @override
+  String get light_mode => 'الوضع_النهاري ';
+
+  @override
   String get logout => 'تسجيل الخروج';
 
   @override
@@ -148,4 +151,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get choose_time => 'اختر الوقت';
+
+  @override
+  String get no_event_yet => 'لم يتم اضافه اي أحداث بعد الان';
+
+  @override
+  String get no_fav_event_yet => 'لم يتم اضافه اي أحداث مفضله بعد الان';
 }
