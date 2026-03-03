@@ -1,11 +1,9 @@
-import 'package:evently_app/providers/app_theme_provider.dart';
 import 'package:evently_app/ui/on_boarding/model/on_boarding_model.dart';
 import 'package:evently_app/ui/on_boarding/shared_prefs.dart';
 import 'package:evently_app/ui/on_boarding/views/widgets/lang_item.dart';
 import 'package:evently_app/utiles/app_assets.dart';
 import 'package:evently_app/utiles/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
 

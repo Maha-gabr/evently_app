@@ -18,6 +18,8 @@ class AppTheme{
         titleLarge: AppStyles.med20black,
         labelMedium: AppStyles.semi16Main,
         titleMedium: AppStyles.med14Black,
+        displaySmall: AppStyles.reg16grey,
+        displayMedium: AppStyles.med18main
       ),
       navigationBarTheme: NavigationBarThemeData(
           backgroundColor: AppColors.whiteBgColor,
@@ -137,6 +139,9 @@ class AppTheme{
         titleLarge: AppStyles.med20white,
         labelMedium: AppStyles.semi16MainDark,
         titleMedium: AppStyles.med14White,
+        displaySmall: AppStyles.reg16whiteDark,
+          displayMedium: AppStyles.med18White
+
 
       ),
       navigationBarTheme: NavigationBarThemeData(
