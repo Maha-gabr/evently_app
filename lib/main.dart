@@ -5,6 +5,8 @@ import 'package:evently_app/providers/userProvider.dart';
 import 'package:evently_app/ui/add_event_screen/add_event_screen.dart';
 import 'package:evently_app/ui/authentication/login_screen/login_screen.dart';
 import 'package:evently_app/ui/authentication/register_screen/register_screen.dart';
+import 'package:evently_app/ui/on_boarding/shared_prefs.dart';
+import 'package:evently_app/ui/on_boarding/views/on_boarding_screen.dart';
 import 'package:evently_app/ui/root_screen.dart';
 import 'package:evently_app/ui/tabs/home_tap/home_tap.dart';
 import 'package:evently_app/utiles/app_routes.dart';
@@ -20,6 +22,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  bool isSeen=await checkOnboarding();
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AppLangProvider(),),
@@ -28,12 +31,12 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => Userprovider(),)
 
       ],
-      child: const MyApp()));
+      child: MyApp(isSeen: isSeen,)));
 }
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isSeen ;
+  const MyApp({super.key,required this.isSeen});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     var appLangProvider = Provider.of<AppLangProvider>(context);
@@ -54,10 +57,15 @@ class MyApp extends StatelessWidget {
         AppRoutes.routeScreenRouteName : (context)=> RootScreen(),
         AppRoutes.registerScreenRouteName : (context)=> RegisterScreen(),
         AppRoutes.loginScreenRouteName : (context)=> LoginScreen(),
+        AppRoutes.onBoardingScrenRouteName : (context)=>OnBoardingScreen()
 
       },
-      initialRoute:AppRoutes.registerScreenRouteName,
+      initialRoute:isSeen?AppRoutes.registerScreenRouteName:AppRoutes.onBoardingScrenRouteName,
       // home: RegisterScreen(),
     );
   }
+}
+
+Future <bool> checkOnboarding() async {
+ return await AppPreference.isOnboardingComplete();
 }
