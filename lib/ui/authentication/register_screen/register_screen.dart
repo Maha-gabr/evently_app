@@ -163,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         final Userprovider userProvider= Provider.of<Userprovider>(context,listen: false);
                         userProvider.updateUser(myUser);
                           AppToast.appToast(text: "Registered Successfully");
-                          Navigator.of(context).pushNamed(AppRoutes.routeScreenRouteName);
+                          Navigator.of(context).pushReplacementNamed(AppRoutes.routeScreenRouteName);
                           print('🚩🚩🚩added');
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
@@ -202,7 +202,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Text(AppLocalizations.of(context)!.or,style: Theme.of(context).textTheme.labelSmall)),
                 SizedBox(height: context.height * 0.03,),
                 TextButton.icon(
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.pushReplacementNamed(context, AppRoutes.signinScrenRouteName);
+                  },
                   label: Text(AppLocalizations.of(context)!.signup_with_google),
                   icon: Image.asset(AppAssets.emailIcon,),
                 )
