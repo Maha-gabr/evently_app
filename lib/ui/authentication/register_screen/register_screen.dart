@@ -203,7 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(height: context.height * 0.03,),
                 TextButton.icon(
                   onPressed: (){
-                    Navigator.pushReplacementNamed(context, AppRoutes.signinScrenRouteName);
+                    Navigator.pushReplacementNamed(context, AppRoutes.signinScreengoogleRouteName);
                   },
                   label: Text(AppLocalizations.of(context)!.signup_with_google),
                   icon: Image.asset(AppAssets.emailIcon,),

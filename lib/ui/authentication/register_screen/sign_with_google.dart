@@ -85,6 +85,10 @@ class _SignInWithGoogleScreenState extends State<SignInWithGoogleScreen> {
                     },
 
                   ),
+                  SizedBox(height: height * 0.01,),
+                  Align(
+                      alignment: .centerRight,
+                      child: Text(AppLocalizations.of(context)!.forget_pass,style: Theme.of(context).textTheme.bodySmall,)),
                   SizedBox(height: height * 0.03,),
                   ElevatedButton(
                       onPressed: (){
@@ -94,7 +98,25 @@ class _SignInWithGoogleScreenState extends State<SignInWithGoogleScreen> {
                           Navigator.pushReplacementNamed(context, AppRoutes.routeScreenRouteName);
                         }
                       },
-                      child:  Text(AppLocalizations.of(context)!.signup))
+                      child:  Text(AppLocalizations.of(context)!.signup)),
+                  SizedBox(height:  height* 0.03,),
+                  Row(
+                    mainAxisAlignment: .center,
+                    children: [
+                      Text(AppLocalizations.of(context)!.already_have_account,style: Theme.of(context).textTheme.headlineMedium,),
+                      SizedBox(width: width* 0.01,),
+                      GestureDetector(
+                          onTap: (){
+                      Navigator.of(context).pushNamed(AppRoutes.loginScreenRouteName);
+                          },
+                          child: GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).pushNamed(AppRoutes.loginScreenRouteName);
+                              },
+                              child: Text(AppLocalizations.of(context)!.login,style: Theme.of(context).textTheme.bodySmall))),
+                    ],
+                  ),
+
 
                 ],
               ),
