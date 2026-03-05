@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../utiles/app_assets.dart';
-class SignInWithGoogleScreen extends StatefulWidget {
-  const SignInWithGoogleScreen({super.key});
+class LogInWithGoogleScreen extends StatefulWidget {
+  const LogInWithGoogleScreen({super.key});
 
   @override
-  State<SignInWithGoogleScreen> createState() => _SignInWithGoogleScreenState();
+  State<LogInWithGoogleScreen> createState() => _SignInWithGoogleScreenState();
 }
 
-class _SignInWithGoogleScreenState extends State<SignInWithGoogleScreen> {
+class _SignInWithGoogleScreenState extends State<LogInWithGoogleScreen> {
   late TextEditingController passController ;
   late TextEditingController emailController;
   @override
@@ -38,7 +38,7 @@ class _SignInWithGoogleScreenState extends State<SignInWithGoogleScreen> {
         child: Column(
           mainAxisAlignment: .start,
           children: [
-            Text('Sign in With Your Google Account' ,style: Theme.of(context).textTheme.labelLarge,),
+            Text('Log in With Your Google Account' ,style: Theme.of(context).textTheme.labelLarge,),
             SizedBox(height: height * 0.03,),
             Form(
               key:formKey ,
@@ -85,10 +85,6 @@ class _SignInWithGoogleScreenState extends State<SignInWithGoogleScreen> {
                     },
 
                   ),
-                  SizedBox(height: height * 0.01,),
-                  Align(
-                      alignment: .centerRight,
-                      child: Text(AppLocalizations.of(context)!.forget_pass,style: Theme.of(context).textTheme.bodySmall,)),
                   SizedBox(height: height * 0.03,),
                   ElevatedButton(
                       onPressed: (){
@@ -99,21 +95,17 @@ class _SignInWithGoogleScreenState extends State<SignInWithGoogleScreen> {
                         }
                       },
                       child:  Text(AppLocalizations.of(context)!.signup)),
-                  SizedBox(height:  height* 0.03,),
+                  SizedBox(height: height* 0.03,),
                   Row(
                     mainAxisAlignment: .center,
                     children: [
-                      Text(AppLocalizations.of(context)!.already_have_account,style: Theme.of(context).textTheme.headlineMedium,),
+                      Text(AppLocalizations.of(context)!.dont_have_account,style: Theme.of(context).textTheme.headlineMedium,),
                       SizedBox(width: width* 0.01,),
                       GestureDetector(
                           onTap: (){
-                      Navigator.of(context).pushNamed(AppRoutes.loginScreenRouteName);
+                            Navigator.of(context).pop(AppRoutes.signinScreengoogleRouteName);
                           },
-                          child: GestureDetector(
-                              onTap: (){
-                                Navigator.of(context).pushNamed(AppRoutes.loginScreenRouteName);
-                              },
-                              child: Text(AppLocalizations.of(context)!.login,style: Theme.of(context).textTheme.bodySmall))),
+                          child: Text(AppLocalizations.of(context)!.signup,style: Theme.of(context).textTheme.bodySmall)),
                     ],
                   ),
 

@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../providers/event_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -119,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       userProvider.updateUser(userProvider.myUser);
                       */
-                      Navigator.of(context).pushNamed(AppRoutes.routeScreenRouteName);
+                      Navigator.of(context).pushReplacementNamed(AppRoutes.routeScreenRouteName);
                       AppToast.appToast(text: "Logged In Successfully",color: AppColors.greenColor);
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'invalid-credential') {

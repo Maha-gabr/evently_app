@@ -5,8 +5,7 @@ class AppRoutes {
   static final String loginScreenRouteName = '/login_screen';
   static final String registerScreenRouteName = '/register_screen';
   static final String onBoardingScrenRouteName = '/onBoardingScreen';
-
-
+  static final String signinScrenRouteName = '/sign_in_Screen';
 
 
 

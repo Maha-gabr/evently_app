@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/userProvider.dart';
-import 'data/google_signin_logic.dart';
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -203,33 +202,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Text(AppLocalizations.of(context)!.or,style: Theme.of(context).textTheme.labelSmall)),
                 SizedBox(height: context.height * 0.03,),
                 TextButton.icon(
-                  onPressed: () async {
-                    try {
-                      //add user to google auth
-                      await AuthService.signInWithGoogle();
-                      final googleUser = await AuthService.signInWithGoogle();
-                      if(googleUser!= null){
-                        MyUser myGoogleUser = MyUser(
-                          name: googleUser.user?.displayName??'',
-                          email: googleUser.user?.email??'',
-                          id: googleUser.user?.uid??'',
-                        );
-                        //add user to fire store
-                        await FirebaseUtils.addUsersToFireStore(myGoogleUser);
-                        // update user
-                        final Userprovider userProvider= Provider.of<Userprovider>(context,listen: false);
-                        userProvider.updateUser(myGoogleUser);
-                      }
-
-                      Navigator.pushReplacementNamed(context, AppRoutes.routeScreenRouteName);
-
-                    }  on FirebaseAuthException catch (e) {
-                      debugPrint('🚩🚩🚩🚩Firebase Error: ${e.code} - ${e.message}');
-                      return null;
-                    } catch (e) {
-                      debugPrint('🚩🚩🚩🚩General Error: $e');
-                      return null;
-                    }                  },
+                  onPressed: (){
+                    Navigator.pushReplacementNamed(context, AppRoutes.signinScrenRouteName);
+                  },
                   label: Text(AppLocalizations.of(context)!.signup_with_google),
                   icon: Image.asset(AppAssets.emailIcon,),
                 )
