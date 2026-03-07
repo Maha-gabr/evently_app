@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/userProvider.dart';
 import '../../../utiles/app_routes.dart';
+import '../../../utiles/app_toast.dart';
 class HomeTap extends StatefulWidget {
   @override
   State<HomeTap> createState() => _HomeTapState();
@@ -23,9 +24,10 @@ class _HomeTapState extends State<HomeTap> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // final eventProvider = context.read<EventProvider>();
+      final eventProvider = context.read<EventProvider>();
+      final userProvider = context.read<Userprovider>();
       eventProvider.getEventNameList(context);
-      eventProvider.getEventsList(userprovider.myUser?.id??'');
+      eventProvider.getEventsList(userProvider.myUser?.id??'');
     },);
   }
   @override
@@ -71,7 +73,7 @@ class _HomeTapState extends State<HomeTap> {
                     tabAlignment: .start,
                     onTap: (index){
                       context.read<EventProvider>().changeIndex(index);
-                      eventProvider.getEventNameList(context);
+                   //   eventProvider.getEventNameList(context);
                       context.read<EventProvider>().applyFilter();
                     },
                     tabs:
@@ -84,20 +86,40 @@ class _HomeTapState extends State<HomeTap> {
                   )
               ),
               SizedBox(height: context.height * 0.02,),
-              Expanded(
-                  child: context.watch<EventProvider>().isLoading ?
-                      Center(child: CircularProgressIndicator(color: Colors.red,))
-                    : eventProvider.filterList.isEmpty?
+               Expanded(
+                  // child: context.watch<EventProvider>().isLoading ?
+                  //     Center(child: CircularProgressIndicator(color: Colors.red,))
+                  //   :
+              child:  eventProvider.filterList.isEmpty?
                    Center(child: Text(AppLocalizations.of(context)!.no_event_yet, style:Theme.of(context).textTheme.headlineMedium ,))
                   :ListView.separated(
                       itemBuilder: (context, index)
                       {
                         return GestureDetector(
-                          onTap: () {
-                            // print("$index");
-                            context.read<EventProvider>().applyFav(eventProvider.filterList[index]);
+                          onTap: () async {
+                            //print('🚩🚩🚩🚩🚩trying');
+                            //  print(eventProvider.filterList[index].id);
+                        await context.read<EventProvider>().applyFav(
+                          Provider.of<EventProvider>(context, listen: false).filterList[index],
+                              Provider.of<Userprovider>(context, listen: false).myUser?.id??'',
+                            );
+                       // print('🚩🚩🚩🚩🚩faved');
                           },
-                          child: EvenItem(event:eventProvider.filterList[index]),);
+                          child: EvenItem(
+                            event:eventProvider.filterList[index],
+                          onDelete:() async {
+                            await context.read<EventProvider>().deleteEvent(eventProvider.filterList[index],
+                                Provider.of<Userprovider>(context,listen: false).myUser!
+                            );
+                            AppToast.appToast(text: 'Event Deleted Successfully');
+                          },
+                            onUpdate: (){
+                              // eventProvider.changeEvent(eventProvider.filterList[index]);
+                              // print("❤❤❤❤❤🚩🚩${eventProvider.updatedEvent?.eventTitle??''}");
+                              Navigator.pushNamed(context, AppRoutes.addEventRouteName);
+                            },
+                          )
+                          );
                       },
                       separatorBuilder: (context, index) {
                         return SizedBox(height: context.height * 0.021,);
@@ -112,6 +134,7 @@ class _HomeTapState extends State<HomeTap> {
           onPressed: (){
 
             Navigator.of(context).pushNamed(AppRoutes.addEventRouteName);
+           // print("🚩🚩${eventProvider.updatedEvent?.id??''}");
           },
           child: Icon(Icons.add),
         )
