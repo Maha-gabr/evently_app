@@ -71,7 +71,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.bounceInOut);
                                 }else{
                                  await AppPreference.markOnboardingComplete();
-                                  Navigator.pushNamedAndRemoveUntil(context, AppRoutes.homeRouteName,  (route) =>false,);
+                                  Navigator.pushNamedAndRemoveUntil(context, AppRoutes.registerScreenRouteName,  (route) =>false,);
                                 }
                               },
                               style: ElevatedButton.styleFrom(
