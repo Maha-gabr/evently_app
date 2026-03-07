@@ -8,6 +8,8 @@ import 'package:evently_app/utiles/app_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../utiles/firebase_utils.dart';
+import '../google_signin_logic.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -110,14 +112,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                       //read user from fireStore and update user provider
                       final Userprovider userProvider= Provider.of<Userprovider>(context,listen: false);
-                    await  userProvider.readUser(credential.user?.uid??'');
+                      await  userProvider.readUser(credential.user?.uid??'');
+                      //userProvider.updateUser(userProvider.myUser);
+
                       //check if user present in firestore
-                      /*
                       if(userProvider.myUser == null){
                         return;
                       }
                       userProvider.updateUser(userProvider.myUser);
-                      */
+
+                     // print("✔✔✔✔✔✔✔🚩🚩🚩🚩${userProvider.myUser?.id ?? " 🚩🚩🚩🚩 no usser"}");
                       Navigator.of(context).pushReplacementNamed(AppRoutes.routeScreenRouteName);
                       AppToast.appToast(text: "Logged In Successfully",color: AppColors.greenColor);
                     } on FirebaseAuthException catch (e) {
@@ -149,7 +153,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(AppLocalizations.of(context)!.or,style: Theme.of(context).textTheme.labelSmall)),
                 SizedBox(height: context.height * 0.05,),
                 TextButton.icon(
-                  onPressed: (){},
+                  onPressed: () async {
+                    try {
+                      final myUser = await AuthService.signInWithGoogle();
+                      if(myUser !=null){
+                        final Userprovider userProvider= Provider.of<Userprovider>(context,listen: false);
+                       final myGoogleUser = userProvider.myUser;
+                        await FirebaseUtils.addUsersToFireStore(myGoogleUser!);
+                        Navigator.pushReplacementNamed(context, AppRoutes.routeScreenRouteName);
+                      }
+                    } on Exception catch (e) {
+                      print("🚩🚩🚩${e.toString()}");
+                    }
+                  },
                   label: Text(AppLocalizations.of(context)!.login_with_google),
                   icon: Image.asset(AppAssets.emailIcon,),
                 )
