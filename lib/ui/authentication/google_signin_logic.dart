@@ -1,9 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../utiles/app_routes.dart';
-
 class AuthService {
   // إنشاء نسخة واحدة ثابتة
   static final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -12,8 +9,7 @@ class AuthService {
 
       // 1. تسجيل الخروج من جوجل أولاً لضمان ظهور قائمة اختيار الحسابات دائماً
       // هذا يحل مشكلة تعليق الحساب القديم
-      //await _googleSignIn.signOut();
-
+      await _googleSignIn.signOut();
       // 2. فتح واجهة اختيار حساب جوجل
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
