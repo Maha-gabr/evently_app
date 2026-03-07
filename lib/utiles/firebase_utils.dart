@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../models/event.dart';
 import '../models/user.dart';
 class FirebaseUtils {
@@ -9,10 +8,10 @@ static CollectionReference<Event> eventCollectionRef(String uid){
       fromFirestore: (snapshot, options) => Event.fromFireStore(snapshot.data()!),
       toFirestore: (value, options) => value.toFireStore(),);
 }
-static Future<void> addEventToFireStore(Event event,String uid){
+static Future<void> addEventToFireStore(Event event,String uid) async {
   DocumentReference<Event> docRef = eventCollectionRef(uid).doc();
   event.id =docRef.id;
-  return docRef.set(event);
+  return await docRef.set(event);
 }
 // get user collection
  static CollectionReference<MyUser>usersCollectionRef(){
@@ -20,7 +19,7 @@ static Future<void> addEventToFireStore(Event event,String uid){
       fromFirestore: (snapshot, options) => MyUser.fromJson(snapshot.data()!),
       toFirestore: (value, options) => value.toJson(),);
 }
-static Future<void> addUsersToFireStore(MyUser user) {
-  return usersCollectionRef().doc(user.id).set(user);
+static Future<void> addUsersToFireStore(MyUser user) async {
+  return await usersCollectionRef().doc(user.id).set(user);
 }
 }

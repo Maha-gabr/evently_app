@@ -1,8 +1,10 @@
 import 'package:evently_app/extensions/context_extension.dart';
+import 'package:evently_app/utiles/app_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../providers/event_provider.dart';
+import '../../../providers/userProvider.dart';
 import '../home_tap/widgets/event_item.dart';
 class FavoriteTap extends StatefulWidget {
   const FavoriteTap({super.key});
@@ -44,13 +46,25 @@ class _FavoriteTapState extends State<FavoriteTap> {
                 ?Text(AppLocalizations.of(context)!.no_fav_event_yet,style: Theme.of(context).textTheme.headlineMedium,)
               :ListView.separated(
                   itemBuilder: (context, index) =>  GestureDetector(
-                      onTap:(){
-                        eventProvider.applyFav(eventProvider.favList[index]);
-                        // print("🚩🚩🚩${index}");
-                        // print("🚩🚩🚩${eventProvider.favList[index].eventName}");
+                      onTap:() async {
+                        await  context.read<EventProvider>().applyFav(
+                          eventProvider.filterList[index],
+                          context.read<Userprovider>().myUser?.id??"",
+                        );
+                        },
+                      child: EvenItem(
+                        event: eventProvider.favList[index],
+                        onDelete:() async {
+                          await context.read<EventProvider>().deleteEvent(eventProvider.filterList[index],
+                              Provider.of<Userprovider>(context,listen: false).myUser!
+                          );
+                          AppToast.appToast(text: 'Event Deleted Successfully');
 
                         },
-                      child: EvenItem(event: eventProvider.favList[index])),
+                        onUpdate: (){
+
+                        },
+                      )),
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 10,);
                   },

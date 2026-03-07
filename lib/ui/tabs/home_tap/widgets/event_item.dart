@@ -7,7 +7,9 @@ import '../../../../providers/app_theme_provider.dart';
 import '../../../../utiles/app_colors.dart';
 class EvenItem extends StatelessWidget {
   final Event event ;
-  const EvenItem({super.key,required this.event});
+  final Function onDelete ;
+  final Function onUpdate;
+  const EvenItem({super.key,required this.event, required this.onDelete, required this.onUpdate});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,6 @@ class EvenItem extends StatelessWidget {
             // child: Text("${event.eventDate}", style:  Theme.of(context).textTheme.labelMedium,),),
 
             child: Text(DateFormat('d MMM').format(event.eventDate), style:  Theme.of(context).textTheme.labelMedium,),),
-
           Spacer(),
           Container(
             height:height * 0.07 ,
@@ -60,13 +61,53 @@ class EvenItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: .center,
               children: [
-                Text(event.eventTitle, style:  Theme.of(context).textTheme.titleMedium,),
+                Text(event.eventTitle, style:  Theme.of(context).textTheme.titleMedium),
                 Spacer(),
                 IconButton(
                   onPressed: (){
                   },
                   icon:Icon(event.isFav ?Icons.favorite : Icons.favorite_border, size: 25,),
-                  color: Theme.of(context).colorScheme.primary, )
+                  color: Theme.of(context).colorScheme.primary, ),
+                PopupMenuButton<String>(
+                  color:Theme.of(context).colorScheme.onPrimary ,
+                  borderRadius: BorderRadius.circular(22),
+                  shape: Border.all(
+                      color:themeProvider.isDark() ? AppColors.strokeDarkColor : AppColors.strokeWhiteColor,
+                  ),
+                  constraints: BoxConstraints(maxWidth: context.width * 0.4),
+                  icon: const Icon(Icons.more_vert),
+                  onSelected: (value) {
+                    if (value == 'delete') {
+                      // delete function
+                    onDelete();
+                    } else if (value == 'update') {
+                      // update function
+                    onUpdate();
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 'update',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.edit, color: Colors.blue),
+                          const SizedBox(width: 10),
+                          Text("Update",style: Theme.of(context).textTheme.titleMedium,),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.delete, color: Colors.red),
+                          const SizedBox(width: 10),
+                          Text("Delete",style:Theme.of(context).textTheme.titleMedium,),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),

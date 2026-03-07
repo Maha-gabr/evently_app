@@ -65,160 +65,164 @@ class _AddEventScreenState extends State<AddEventScreen> {
             ? eventImagesDarkList[eventProvider.selectedIndex]
             : eventImagesLightList[eventProvider.selectedIndex];
         return Scaffold(
-          body: SafeArea(
-            child: Padding(
-              padding: EdgeInsetsGeometry.symmetric(horizontal: context.width * 0.04,vertical: context.width * 0.02),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: Column(crossAxisAlignment: .start,
-                    spacing: context.height * 0.02,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadiusGeometry.circular(8),
-                                border: BoxBorder.all(
-                                    color: Theme.of(context).colorScheme.surface,
-                                    width: 2
-                                ),
-                                color: Theme.of(context).colorScheme.onPrimary
-                            ),
-                            child: IconButton(icon:Icon(Icons.arrow_back_ios_new_outlined,size: 22,),
-                              onPressed: (){
-                                Navigator.pop(context);
-                              },
-                              color: Theme.of(context).colorScheme.tertiary,),
-                          ),
-                          Spacer(),
-                          Text(AppLocalizations.of(context)!.add_event,
-                            style: Theme.of(context).textTheme.headlineLarge,
-                          ),
-                          Spacer(),
-                        ],
-                      ),
-                      Column(
-                        spacing: context.height * 0.02,
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadiusGeometry.circular(18),
-                                  border: Border.all(
-                                      color: Theme.of(context).colorScheme.surface,
-                                      width: 2
-                                  )
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              child: Image.asset(
-                                  selectedImage
-                              ),
-                          ),
-                          SizedBox(
-                              height: context.height * 0.06,
-                              child: ListView.separated(
-                                itemCount:eventNamesList.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                      onTap: (){
-                                         eventProvider.changeIndex(index);
-                                         print('📌📌📌📌${eventNamesList[eventProvider.selectedIndex]}');
+           body: SafeArea(
+             child: Padding(
+               padding: EdgeInsetsGeometry.symmetric(horizontal: context.width * 0.04,vertical: context.width * 0.02),
+               child: SingleChildScrollView(
+                 child: Form(
+                   key: formKey,
+                   child: Column(crossAxisAlignment: .start,
+                     spacing: context.height * 0.02,
+                     children: [
+                       Row(
+                         children: [
+                           Container(
+                             decoration: BoxDecoration(
+                                 borderRadius: BorderRadiusGeometry.circular(8),
+                                 border: BoxBorder.all(
+                                     color: Theme.of(context).colorScheme.surface,
+                                     width: 2
+                                 ),
+                                 color: Theme.of(context).colorScheme.onPrimary
+                             ),
+                             child: IconButton(icon:Icon(Icons.arrow_back_ios_new_outlined,size: 22,),
+                               onPressed: (){
+                                 //eventProvider.initEvent();
+                                 Navigator.of(context).pop(AppRoutes.routeScreenRouteName);
+                               },
+                               color: Theme.of(context).colorScheme.tertiary,),
+                           ),
+                           Spacer(),
+                           Text(AppLocalizations.of(context)!.add_event,
+                             style: Theme.of(context).textTheme.headlineLarge,
+                           ),
+                           Spacer(),
+                         ],
+                       ),
+                       Column(
+                         spacing: context.height * 0.02,
+                         children: [
+                           Container(
+                               decoration: BoxDecoration(
+                                   borderRadius: BorderRadiusGeometry.circular(18),
+                                   border: Border.all(
+                                       color: Theme.of(context).colorScheme.surface,
+                                       width: 2
+                                   )
+                               ),
+                               clipBehavior: Clip.antiAlias,
+                               child: Image.asset(
+                                   selectedImage
+                               ),
+                           ),
+                           SizedBox(
+                               height: context.height * 0.06,
+                               child: ListView.separated(
+                                 itemCount:eventNamesList.length,
+                                 scrollDirection: Axis.horizontal,
+                                 itemBuilder: (context, index) {
+                                   return GestureDetector(
+                                       onTap: (){
+                                          eventProvider.changeIndex(index);
+                                         // print('📌📌📌📌${eventNamesList[eventProvider.selectedIndex]}');
 
-                                      },
-                                      child: TapWidget(
-                                        isSelected:eventProvider.selectedIndex == index,
-                                        eventType: eventNamesList[index],
-                                      )
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(width: context.width * 0.02,);
-                                },
-                              )
-                          )
-                        ],
-                      ),
+                                       },
+                                       child: TapWidget(
+                                         isSelected:eventProvider.selectedIndex == index,
+                                         eventType: eventNamesList[index],
+                                       )
+                                   );
+                                 },
+                                 separatorBuilder: (context, index) {
+                                   return SizedBox(width: context.width * 0.02,);
+                                 },
+                               )
+                           )
+                         ],
+                       ),
 
-                      Text(AppLocalizations.of(context)!.title,
-                        style: Theme.of(context).textTheme.titleLarge,),
-                      CustomTextField(
-                          onValidate: (text){
-                            if(text == null || text.trim().isEmpty){
-                              return 'Please Enter Event Title';
-                            }return null;
-                          },
-                          onChanged: (text){
-                            title = text;
-                            setState(() {
+                       Text(AppLocalizations.of(context)!.title,
+                         style: Theme.of(context).textTheme.titleLarge,),
+                       CustomTextField(
+                           onValidate: (text){
+                             if(text == null || text.trim().isEmpty){
+                               return 'Please Enter Event Title';
+                             }return null;
+                           },
+                           onChanged: (text){
+                             title = text;
+                             setState(() {
 
-                            });
-                          },
-                          hintText: AppLocalizations.of(context)!.event_title
-                      ),
-                      Text(AppLocalizations.of(context)!.description,
-                        style: Theme.of(context).textTheme.titleLarge,),
-                      CustomTextField(
-                          onValidate: (text){
-                            if(text == null || text.trim().isEmpty){
-                              return 'Please Enter Event Description';
-                            }return null;
-                          },
-                          maxLines: 4,
-                          onChanged: (text){
-                            description = text;
-                            setState(() {
+                             });
+                           },
+                           hintText: AppLocalizations.of(context)!.event_title
+                       ),
+                       Text(AppLocalizations.of(context)!.description,
+                         style: Theme.of(context).textTheme.titleLarge,),
+                       CustomTextField(
+                           onValidate: (text){
+                             if(text == null || text.trim().isEmpty){
+                               return 'Please Enter Event Description';
+                             }return null;
+                           },
+                           maxLines: 4,
+                           onChanged: (text){
+                             description = text;
+                             setState(() {
 
-                            });
-                          },
-                          hintText: AppLocalizations.of(context)!.event_description),
-                      EventDateOrTime(
-                        iconDateOrTime: Icon(Icons.date_range,color:Theme.of(context).colorScheme.tertiary,),
-                        eventDateOrTime: AppLocalizations.of(context)!.event_date,
-                        chooseDateOrTime:selectedDate == null? AppLocalizations.of(context)!.choose_date : dateFormate,
-                        onChooseDateOrTime: onChooseDate,),
-                      EventDateOrTime(
-                        iconDateOrTime: Icon(Icons.access_time_rounded,color:Theme.of(context).colorScheme.tertiary,),
-                        eventDateOrTime:
-                        AppLocalizations.of(context)!.event_time
-                        ,
-                        chooseDateOrTime:selectedTime == null
-                            ?AppLocalizations.of(context)!.choose_time
-                            :timeFormate
-                        ,
-                        onChooseDateOrTime: onChooseTime,),
-                      SizedBox(height: context.height * 0.001,),
-                      ElevatedButton(
-                          onPressed: (){
-                            final MyUser? myUser =Provider.of<Userprovider>(context,listen: false).myUser;
-                            Event event = Event(
-                                eventTime: timeFormate,
-                                eventDate: selectedDate!,
-                                eventDescription: description,
-                                eventImage: selectedImage,
-                                eventTitle: title,
-                                eventName: eventNamesList[eventProvider.selectedIndex]
-                            );
-                              FirebaseUtils.addEventToFireStore(event,myUser?.id??'');
-                              context.read<EventProvider>().getEventsList(myUser?.id??'');
+                             });
+                           },
+                           hintText: AppLocalizations.of(context)!.event_description),
+                       EventDateOrTime(
+                         iconDateOrTime: Icon(Icons.date_range,color:Theme.of(context).colorScheme.tertiary,),
+                         eventDateOrTime: AppLocalizations.of(context)!.event_date,
+                         chooseDateOrTime:selectedDate == null? AppLocalizations.of(context)!.choose_date : dateFormate,
+                         onChooseDateOrTime: onChooseDate,),
+                       EventDateOrTime(
+                         iconDateOrTime: Icon(Icons.access_time_rounded,color:Theme.of(context).colorScheme.tertiary,),
+                         eventDateOrTime:
+                         AppLocalizations.of(context)!.event_time
+                         ,
+                         chooseDateOrTime:selectedTime == null
+                             ?AppLocalizations.of(context)!.choose_time
+                             :timeFormate
+                         ,
+                         onChooseDateOrTime: onChooseTime,),
+                       SizedBox(height: context.height * 0.001,),
+                       ElevatedButton(
+                           onPressed: () async{
+                             final MyUser? myUser =Provider.of<Userprovider>(context,listen: false).myUser;
+                             Event event = Event(
+                                 eventTime: timeFormate,
+                                 eventDate: selectedDate!,
+                                 eventDescription: description,
+                                 eventImage: selectedImage,
+                                 eventTitle: title,
+                                 eventName: eventNamesList[eventProvider.selectedIndex]
+                             );
+                             await FirebaseUtils.addEventToFireStore(event,myUser?.id??'');
+                             context.read<EventProvider>().getEventsList(myUser?.id??'');
+                           //  print('📌📌📌📌${event.eventName}');
+                            // print('✔✔✔✔✔${eventProvider.selectedIndex}');
+                             // Navigator.of(context).pushNamed(AppRoutes.homeRouteName);
+                             Navigator.pop(context);
+                           },
+                           child: Text(
+                               //
+                               // Provider.of<EventProvider>(context,listen:false).updatedEvent != null?
+                               // 'update Event'
+                               // :
+                               AppLocalizations.of(context)!.add_event
+                           )
+                       )
+                     ],
+                   ),
+                 ),
+               ),
+             ),
+           ),
 
-
-                            print('📌📌📌📌${event.eventName}');
-                            print('✔✔✔✔✔${eventProvider.selectedIndex}');
-                            // Navigator.of(context).pushNamed(AppRoutes.homeRouteName);
-                            Navigator.of(context).pushReplacementNamed(AppRoutes.homeRouteName);
-                              Navigator.pop(context);
-                          },
-                          child: Text(AppLocalizations.of(context)!.add_event)
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-        );
+         );
       }
 
        void onChooseDate() async {
@@ -254,3 +258,47 @@ class _AddEventScreenState extends State<AddEventScreen> {
          });
        }
 }
+
+
+
+
+  /*
+final eventProvider = context.read<EventProvider>();
+final MyUser? myUser =Provider.of<Userprovider>(context,listen: false).myUser;
+Event newEvent = Event(
+    eventTime: timeFormate,
+    eventDate: selectedDate!,
+    eventDescription: description,
+    eventImage: selectedImage,
+    eventTitle: title,
+    eventName: eventNamesList[Provider.of<EventProvider>(context,listen: false).selectedIndex]
+);
+// if(Provider.of<EventProvider>(context,listen: false).updatedEvent == null){
+//   await FirebaseUtils.addEventToFireStore(newEvent,myUser?.id??'');
+//   print('📌📌📌📌in add');
+// }else{
+//   await eventProvider.updateEvent(
+//       Provider.of<EventProvider>(context,listen: false).updatedEvent!,
+//       myUser!,
+//       newEvent);
+//   print('📌📌📌📌in update');
+// }
+await FirebaseUtils.addEventToFireStore(newEvent,myUser?.id??'');
+eventProvider.getEventsList(myUser?.id??'');
+// print('📌📌📌📌${event.eventName}');
+// print('✔✔✔✔✔${eventProvider.selectedIndex}');
+// //old
+// print(  Provider.of<EventProvider>(context,listen: false).updatedEvent?.eventTitle??"ooold🚩🚩🚩🚩");
+// // new
+// print('✔✔✔✔✔✔✔✔🚩🚩🚩🚩new${newEvent.eventTitle}');
+// eventProvider.initEvent();
+Navigator.of(context).pop(AppRoutes.routeScreenRouteName);
+//Navigator.of(context).pushNamed(AppRoutes.routeScreenRouteName);
+// if (Navigator.canPop(context)) {
+//   Navigator.pop(context);
+//   eventProvider.initEvent();
+//
+// }
+},
+
+   */
