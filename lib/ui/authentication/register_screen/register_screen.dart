@@ -1,6 +1,7 @@
 import 'package:evently_app/extensions/context_extension.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/user.dart';
+import 'package:evently_app/ui/authentication/google_signin_logic.dart';
 import 'package:evently_app/utiles/app_assets.dart';
 import 'package:evently_app/utiles/app_routes.dart';
 import 'package:evently_app/utiles/app_toast.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/userProvider.dart';
+import '../../../utiles/app_colors.dart';
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -202,8 +204,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Text(AppLocalizations.of(context)!.or,style: Theme.of(context).textTheme.labelSmall)),
                 SizedBox(height: context.height * 0.03,),
                 TextButton.icon(
-                  onPressed: (){
-                    Navigator.pushReplacementNamed(context, AppRoutes.signinScrenRouteName);
+                  onPressed: () async {
+                    try {
+                      final myUser = await AuthService.signInWithGoogle();
+                      if(myUser !=null){
+                        MyUser myGoogleUser =MyUser(
+                            name: myUser.user?.displayName??'',
+                            id: myUser.user?.uid??'',
+                            email: myUser.user?.email??'',);
+                        await FirebaseUtils.addUsersToFireStore(myGoogleUser);
+                        // update user in provider
+                        final Userprovider userProvider= Provider.of<Userprovider>(context,listen: false);
+                        userProvider.updateUser(myGoogleUser);
+                        Navigator.pushReplacementNamed(context, AppRoutes.routeScreenRouteName);
+                      }
+                    } on Exception catch (e) {
+                      print("🚩🚩🚩${e.toString()}");
+                    }
                   },
                   label: Text(AppLocalizations.of(context)!.signup_with_google),
                   icon: Image.asset(AppAssets.emailIcon,),
