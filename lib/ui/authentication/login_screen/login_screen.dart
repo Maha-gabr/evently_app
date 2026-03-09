@@ -2,9 +2,8 @@ import 'package:evently_app/extensions/context_extension.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/userProvider.dart';
 import 'package:evently_app/utiles/app_assets.dart';
-import 'package:evently_app/utiles/app_colors.dart';
+import 'package:evently_app/utiles/app_dialog.dart';
 import 'package:evently_app/utiles/app_routes.dart';
-import 'package:evently_app/utiles/app_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -105,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: ()  async {
                   if(formKey.currentState!.validate()){
                     // sign in user to fire auth
+                    AppDialog.showLoading(context: context);
                     try {
                       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
                           email: emailController.text,
@@ -113,22 +113,42 @@ class _LoginScreenState extends State<LoginScreen> {
                       //read user from fireStore and update user provider
                       final Userprovider userProvider= Provider.of<Userprovider>(context,listen: false);
                       await  userProvider.readUser(credential.user?.uid??'');
-                      //userProvider.updateUser(userProvider.myUser);
-
                       //check if user present in firestore
                       if(userProvider.myUser == null){
+                        AppDialog.hideLoading(context: context);
+                        AppDialog.showMessage(
+                          context: context,
+                          message: "User data not found",
+                          title: "Error",
+                        );
+
                         return;
                       }
                       userProvider.updateUser(userProvider.myUser);
-
-                     // print("✔✔✔✔✔✔✔🚩🚩🚩🚩${userProvider.myUser?.id ?? " 🚩🚩🚩🚩 no usser"}");
-                      Navigator.of(context).pushReplacementNamed(AppRoutes.routeScreenRouteName);
-                      AppToast.appToast(text: "Logged In Successfully",color: AppColors.greenColor);
+                      AppDialog.hideLoading(context: context);
+                      AppDialog.showMessage(
+                          context: context,
+                          message: 'logged In Successfully',
+                          title:'success',
+                          posActionName:AppLocalizations.of(context)!.login
+                          ,positiveAction: (){
+                            Navigator.pop(context);
+                        Navigator.of(context).pushReplacementNamed(AppRoutes.routeScreenRouteName);
+                      });
+                    //  AppToast.appToast(text: "Logged In Successfully",color: AppColors.greenColor);
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'invalid-credential') {
-                        AppToast.appToast(text: 'Email or Password is Not Correct',color: AppColors.redColor);
-                      }
-                      print("🚩🚩🚩${e.code}");
+                        AppDialog.hideLoading(context: context);
+                        AppDialog.showMessage(
+                          context: context,
+                          message: 'Email Or Password Is Not True',
+                          title: "Error",
+                          negActionName: 'Try Again',
+                          negativeAction: (){
+                            Navigator.pop(context);
+                          }
+                        );                      }
+                      //print("🚩🚩🚩${e.code}");
                     }
                   }
                 },
@@ -154,16 +174,34 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: context.height * 0.05,),
                 TextButton.icon(
                   onPressed: () async {
+                    AppDialog.showLoading(context: context);
                     try {
                       final myUser = await AuthService.signInWithGoogle();
                       if(myUser !=null){
                         final Userprovider userProvider= Provider.of<Userprovider>(context,listen: false);
                        final myGoogleUser = userProvider.myUser;
                         await FirebaseUtils.addUsersToFireStore(myGoogleUser!);
-                        Navigator.pushReplacementNamed(context, AppRoutes.routeScreenRouteName);
-                      }
+                        AppDialog.hideLoading(context: context);
+                        AppDialog.showMessage(
+                            context: context,
+                            message: 'Logged In Successfully',
+                            title:'success',
+                            posActionName:AppLocalizations.of(context)!.login
+                            ,positiveAction: (){
+                          Navigator.pop(context);
+                          Navigator.of(context).pushReplacementNamed(AppRoutes.routeScreenRouteName);
+                        });                      }
                     } on Exception catch (e) {
-                      print("🚩🚩🚩${e.toString()}");
+                      AppDialog.hideLoading(context: context);
+                      AppDialog.showMessage(
+                          context: context,
+                          message: e.toString(),
+                          title:'Error',
+                          negActionName:'Try Again'
+                          ,negativeAction: (){
+                        Navigator.pop(context);
+                      });
+                    //  print("🚩🚩🚩${e.toString()}");
                     }
                   },
                   label: Text(AppLocalizations.of(context)!.login_with_google),

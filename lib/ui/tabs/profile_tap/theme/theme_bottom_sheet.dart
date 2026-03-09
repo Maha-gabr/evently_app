@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../providers/app_theme_provider.dart';
-
-
 class ThemeBottomSheet extends StatelessWidget {
 
   @override

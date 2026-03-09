@@ -3,15 +3,14 @@ import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/user.dart';
 import 'package:evently_app/ui/authentication/google_signin_logic.dart';
 import 'package:evently_app/utiles/app_assets.dart';
+import 'package:evently_app/utiles/app_dialog.dart';
 import 'package:evently_app/utiles/app_routes.dart';
-import 'package:evently_app/utiles/app_toast.dart';
 import 'package:evently_app/utiles/firebase_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/userProvider.dart';
-import '../../../utiles/app_colors.dart';
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -149,6 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ElevatedButton(
                     onPressed: () async {
                       if(formKey.currentState!.validate()){
+                        AppDialog.showLoading(context: context);
                         try {
                           final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
                             email: emailController.text,
@@ -164,18 +164,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           // add user to provider
                         final Userprovider userProvider= Provider.of<Userprovider>(context,listen: false);
                         userProvider.updateUser(myUser);
-                          AppToast.appToast(text: "Registered Successfully");
-                          Navigator.of(context).pushReplacementNamed(AppRoutes.routeScreenRouteName);
-                          print('🚩🚩🚩added');
+                        AppDialog.hideLoading(context: context);
+                          AppDialog.showMessage(
+                              context: context,
+                              message: 'Sign up Successfully',
+                              title:'success',
+                              posActionName:AppLocalizations.of(context)!.signup
+                              ,positiveAction: (){
+                            Navigator.pop(context);
+                            Navigator.of(context).pushReplacementNamed(AppRoutes.routeScreenRouteName);
+                          })          ;
+                          //  AppToast.appToast(text: "Registered Successfully");
+                          //Navigator.of(context).pushReplacementNamed(AppRoutes.routeScreenRouteName);
+                          //print('🚩🚩🚩added');
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
-                            print('The password provided is too weak.');
+                            AppDialog.hideLoading(context: context);
+                            AppDialog.showMessage(
+                                context: context,
+                                message: 'weak-password',
+                                title:'Error',
+                                negActionName:'Try Again'
+                                ,negativeAction: (){
+                              Navigator.pop(context);
+                            });
+                            //print('The password provided is too weak.');
                           } else if (e.code == 'email-already-in-use') {
-                            print('The account already exists for that email.');
-                          }
+                            AppDialog.hideLoading(context: context);
+                            AppDialog.showMessage(
+                                context: context,
+                                message: 'Email already In Use',
+                                title:'Error',
+                                negActionName:'Try Again'
+                                ,negativeAction: (){
+                              Navigator.pop(context);
+                            });                          }
                         } catch (e) {
-                          print(e);
-                        }
+                          AppDialog.hideLoading(context: context);
+                          AppDialog.showMessage(
+                              context: context,
+                              message: e.toString(),
+                              title:'Error',
+                              negActionName:'Try Again'
+                              ,negativeAction: (){
+                            Navigator.pop(context);
+                          });                        }
 
                       }
                     },
@@ -205,6 +238,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(height: context.height * 0.03,),
                 TextButton.icon(
                   onPressed: () async {
+                    AppDialog.showLoading(context: context);
                     try {
                       final myUser = await AuthService.signInWithGoogle();
                       if(myUser !=null){
@@ -216,12 +250,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // update user in provider
                         final Userprovider userProvider= Provider.of<Userprovider>(context,listen: false);
                         userProvider.updateUser(myGoogleUser);
-                        Navigator.pushReplacementNamed(context, AppRoutes.routeScreenRouteName);
+                        AppDialog.hideLoading(context: context);
+                        AppDialog.showMessage(
+                            context: context,
+                            message: 'Sign up Successfully',
+                            title:'success',
+                            posActionName:AppLocalizations.of(context)!.signup
+                            ,positiveAction: (){
+                          Navigator.pop(context);
+                          Navigator.of(context).pushReplacementNamed(AppRoutes.routeScreenRouteName);
+                        });
                       }
                     } on Exception catch (e) {
-                      print("🚩🚩🚩${e.toString()}");
+                      AppDialog.hideLoading(context: context);
+                      AppDialog.showMessage(
+                          context: context,
+                          message: e.toString(),
+                          title:'Error',
+                          negActionName:'Try Again'
+                          ,negativeAction: (){
+                        Navigator.pop(context);
+                      });
                     }
-                  },
+
+                    //  print("🚩🚩🚩${e.toString()}");
+                    }
+                ,
                   label: Text(AppLocalizations.of(context)!.signup_with_google),
                   icon: Image.asset(AppAssets.emailIcon,),
                 )
