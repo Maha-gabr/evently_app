@@ -47,8 +47,8 @@ class _RootScreenState extends State<RootScreen> {
                 label: AppLocalizations.of(context)!.favorite
             ) ,
             NavigationDestination(
-                icon: Icon(Icons.person),
-                selectedIcon: Icon(Icons.home),
+                icon: Icon(Icons.perm_identity_outlined),
+                selectedIcon: Icon(Icons.person),
                 label: AppLocalizations.of(context)!.profile
             ) ,
           ]

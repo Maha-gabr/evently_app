@@ -7,7 +7,6 @@ import 'package:evently_app/utiles/app_colors.dart';
 import 'package:evently_app/utiles/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../providers/app_theme_provider.dart';
 import 'language/lang_bottom_sheet.dart';
 class ProfileTap extends StatefulWidget {
@@ -23,8 +22,6 @@ bool isSelected = false;
   Widget build(BuildContext context) {
     var themeProvider = context.watch<AppThemeProvider>();
     var userProvider = context.watch<Userprovider>();
-
-
     return SafeArea(
       child: Padding(
         padding: EdgeInsetsGeometry.symmetric(horizontal: context.width *0.06,vertical:  context.height * 0.04),
