@@ -18,9 +18,6 @@ class _FavoriteTapState extends State<FavoriteTap> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // eventProvider.ap;se
-    },);
   }
   @override
   Widget build(BuildContext context) {
@@ -38,6 +35,9 @@ class _FavoriteTapState extends State<FavoriteTap> {
                     hintText: AppLocalizations.of(context)!.search_for_event,
                     suffixIcon: Icon(Icons.search)
                 ),
+                onChanged: (value){
+                  eventProvider.applySearch(value);
+                },
               ),
               SizedBox(height: context.height * 0.02,),
               Expanded(child:
@@ -48,8 +48,8 @@ class _FavoriteTapState extends State<FavoriteTap> {
                   itemBuilder: (context, index) =>  GestureDetector(
                       onTap:() async {
                         await  context.read<EventProvider>().applyFav(
-                          eventProvider.filterList[index],
-                          context.read<Userprovider>().myUser?.id??"",
+                          eventProvider.favList[index],
+                          Provider.of<Userprovider>(context,listen: false).myUser?.id??"",
                         );
                         },
                       child: EvenItem(

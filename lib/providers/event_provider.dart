@@ -36,7 +36,7 @@ class EventProvider extends ChangeNotifier{
   }
 
 void getEventsList(String uid){
-     //listener?.cancel();
+     listener?.cancel();
     isLoading = true;
     errorMessage = null;
     notifyListeners();
@@ -69,7 +69,7 @@ void getEventsList(String uid){
 
   Future<void> applyFav(Event event, String uid) async {
     event.isFav = !event.isFav;
-    notifyListeners();
+   // notifyListeners();
      await FirebaseUtils
         .eventCollectionRef(uid)
         .doc(event.id)
@@ -86,9 +86,18 @@ Future<void> deleteEvent(Event event ,MyUser user) async {
       .delete();
 
 }
-  stopListening(){
+
+  void applySearch(String value) {
+    favList = favList.
+        where((event) =>
+    event.eventTitle.toLowerCase().contains(value.toLowerCase())).toList();
+    notifyListeners();
+  }
+
+  void stopListening(){
     listener?.cancel();
   }
+
 }
 
 

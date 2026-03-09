@@ -6,6 +6,8 @@ import "package:evently_app/providers/userProvider.dart";
 import "package:evently_app/ui/add_event_screen/widgets/custom_text_field.dart";
 import "package:evently_app/ui/add_event_screen/widgets/event_date_or_time.dart";
 import "package:evently_app/utiles/app_assets.dart";
+import "package:evently_app/utiles/app_dialog.dart";
+import "package:evently_app/utiles/app_toast.dart";
 import "package:evently_app/utiles/firebase_utils.dart";
 import"package:flutter/material.dart";
 import "package:intl/intl.dart";
@@ -191,6 +193,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                        SizedBox(height: context.height * 0.001,),
                        ElevatedButton(
                            onPressed: () async{
+                             AppDialog.showLoading(context: context);
                              final MyUser? myUser =Provider.of<Userprovider>(context,listen: false).myUser;
                              Event event = Event(
                                  eventTime: timeFormate,
@@ -205,7 +208,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
                            //  print('📌📌📌📌${event.eventName}');
                             // print('✔✔✔✔✔${eventProvider.selectedIndex}');
                              // Navigator.of(context).pushNamed(AppRoutes.homeRouteName);
+                             AppDialog.hideLoading(context: context);
+                             AppToast.appToast(text: 'Event Added Successfully');
                              Navigator.pop(context);
+
                            },
                            child: Text(
                                //
