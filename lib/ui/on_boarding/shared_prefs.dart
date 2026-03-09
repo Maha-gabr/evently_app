@@ -1,12 +1,34 @@
 import 'package:shared_preferences/shared_preferences.dart';
 class AppPreference{
-  static String onBoardingKey = 'seenOnboarding';
-  static Future<void> markOnboardingComplete ()async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(onBoardingKey, true);
+  static SharedPreferences? _prefs;
+  static AppPreference? _instance;
+  AppPreference._();
+  static AppPreference instance(){
+    _instance ??= AppPreference._();
+    return _instance!;
   }
-  static Future<bool> isOnboardingComplete ()async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(onBoardingKey) ?? false;
+
+  static Future<void> init () async {
+    _prefs ??= await SharedPreferences.getInstance();
+
   }
+
+  Future<bool> saveData(String key , dynamic value)async{
+    if(value is String){
+     return await _prefs!.setString(key, value);
+    }else if(value is int){
+     return await _prefs!.setInt(key, value);
+    }else if(value is bool){
+     return await _prefs!.setBool(key, value);
+    }
+     return false;
+
+  }
+
+  dynamic getData(String key){
+    return _prefs!.get(key);
+  }
+
+
+
 }

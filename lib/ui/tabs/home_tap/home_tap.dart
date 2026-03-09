@@ -50,6 +50,7 @@ class _HomeTapState extends State<HomeTap> {
                   ,Spacer(),
                   IconButton(
                       onPressed: (){
+                        themeProvider.changeTheme(themeProvider.isDark()?ThemeMode.light:ThemeMode.dark);
                       },
                       icon:themeProvider.isDark()
                           ? Icon(Icons.mode_night_outlined,size: 24,color: AppColors.mainDarkColor,)
@@ -103,7 +104,7 @@ class _HomeTapState extends State<HomeTap> {
                           Provider.of<EventProvider>(context, listen: false).filterList[index],
                               Provider.of<Userprovider>(context, listen: false).myUser?.id??'',
                             );
-                       // print('🚩🚩🚩🚩🚩faved');
+                       // print('🚩🚩🚩🚩🚩saved');
                           },
                           child: EvenItem(
                             event:eventProvider.filterList[index],

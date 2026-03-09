@@ -11,13 +11,18 @@ class LangLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<AppThemeProvider>(context);
     var langProvider = Provider.of<AppLangProvider>(context);
-    return Container(
-      padding: EdgeInsetsGeometry.symmetric(vertical: 4,horizontal: 8),
-      decoration: BoxDecoration(
-          color: themeProvider.isDark() ? AppColors.mainDarkColor :AppColors.mainColor,
-          borderRadius: BorderRadiusGeometry.circular(8)
+    return GestureDetector(
+      onTap: (){
+        langProvider.changLang(langProvider.appLang == 'en' ? 'ar' : 'en');
+      },
+      child: Container(
+        padding: EdgeInsetsGeometry.symmetric(vertical: 4,horizontal: 8),
+        decoration: BoxDecoration(
+            color: themeProvider.isDark() ? AppColors.mainDarkColor :AppColors.mainColor,
+            borderRadius: BorderRadiusGeometry.circular(8)
+        ),
+        child: Text(langProvider.appLang.toUpperCase(),style: Theme.of(context).textTheme.bodyMedium,),
       ),
-      child: Text(langProvider.appLang.toUpperCase(),style: Theme.of(context).textTheme.bodyMedium,),
     );
   }
 }

@@ -2,6 +2,8 @@ import 'package:evently_app/ui/on_boarding/model/on_boarding_model.dart';
 import 'package:evently_app/ui/on_boarding/shared_prefs.dart';
 import 'package:evently_app/ui/on_boarding/views/widgets/lang_item.dart';
 import 'package:evently_app/utiles/app_assets.dart';
+import 'package:evently_app/utiles/app_colors.dart';
+import 'package:evently_app/utiles/app_constant.dart';
 import 'package:evently_app/utiles/app_routes.dart';
 import 'package:flutter/material.dart';
 class OnBoardingScreen extends StatefulWidget {
@@ -33,10 +35,31 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     final List<OnBoardingModel> modelList = OnBoardingModel.getOnBoardingModelList(context);
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 60,
+        toolbarHeight: 50,
         title:Image.asset(AppAssets.logoImage),
         centerTitle: true,
-      ),
+        actions: [
+          if (currentIndex != modelList.length - 1)
+            TextButton(
+              onPressed: () async {
+                await AppPreference.instance()
+                    .saveData(AppConstant.appOnBoardingKey, false);
+
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.registerScreenRouteName,
+                      (route) => false,
+                );
+              },
+              child: Text(
+                "Skip",
+                style: TextStyle(
+                  color: AppColors.redColor,
+                  fontSize: 18,
+                ),
+              ),
+            )
+        ],      ),
       body: Padding(
         padding: EdgeInsetsGeometry.symmetric(horizontal: width * 0.04,vertical: 18),
         child: Column(
@@ -70,7 +93,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 if(index <modelList.length -1){
                                   pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.bounceInOut);
                                 }else{
-                                 await AppPreference.markOnboardingComplete();
+                                await AppPreference.instance().saveData(AppConstant.appOnBoardingKey, false);
                                   Navigator.pushNamedAndRemoveUntil(context, AppRoutes.registerScreenRouteName,  (route) =>false,);
                                 }
                               },

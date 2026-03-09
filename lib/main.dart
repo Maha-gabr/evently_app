@@ -9,6 +9,7 @@ import 'package:evently_app/ui/on_boarding/shared_prefs.dart';
 import 'package:evently_app/ui/on_boarding/views/on_boarding_screen.dart';
 import 'package:evently_app/ui/root_screen.dart';
 import 'package:evently_app/ui/tabs/home_tap/home_tap.dart';
+import 'package:evently_app/utiles/app_constant.dart';
 import 'package:evently_app/utiles/app_routes.dart';
 import 'package:evently_app/utiles/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,20 +23,20 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  bool isSeen=await checkOnboarding();
+ await AppPreference.init();
+  bool onBoarding = await AppPreference.instance().getData(AppConstant.appOnBoardingKey) ?? true;
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AppLangProvider(),),
         ChangeNotifierProvider(create: (context) => AppThemeProvider(),),
         ChangeNotifierProvider(create: (context) => EventProvider(),),
         ChangeNotifierProvider(create: (context) => Userprovider(),)
-
       ],
-      child: MyApp(isSeen: isSeen,)));
+      child: MyApp(onBoarding: onBoarding,)));
 }
 class MyApp extends StatelessWidget {
-  final bool isSeen ;
-  const MyApp({super.key,required this.isSeen});
+  final bool onBoarding ;
+  const MyApp({super.key,required this.onBoarding});
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +59,9 @@ class MyApp extends StatelessWidget {
         AppRoutes.registerScreenRouteName : (context)=> RegisterScreen(),
         AppRoutes.loginScreenRouteName : (context)=> LoginScreen(),
         AppRoutes.onBoardingScrenRouteName : (context)=>OnBoardingScreen()
-
       },
-      initialRoute:isSeen?AppRoutes.registerScreenRouteName:AppRoutes.onBoardingScrenRouteName,
-      // home: RegisterScreen(),
+      initialRoute:onBoarding?AppRoutes.onBoardingScrenRouteName:AppRoutes.registerScreenRouteName,
+       // home:OnBoardingScreen(),
     );
   }
-}
-
-Future <bool> checkOnboarding() async {
- return await AppPreference.isOnboardingComplete();
 }
